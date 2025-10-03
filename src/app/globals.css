@@ -1,26 +1,51 @@
-@import "tailwindcss";
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import '../app/styles/tokens.css';
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased; /* antialiased */
+  -moz-osx-font-smoothing: grayscale;  /* antialiased */
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
 }
+
+.container-base {
+  max-width: 72rem; /* max-w-6xl */
+  margin-left: auto; /* mx-auto */
+  margin-right: auto; /* mx-auto */
+.section {
+  padding-top: 4rem; /* py-16 */
+  padding-bottom: 4rem; /* py-16 */
+}
+.card {
+  background: color-mix(in oklab, rgb(var(--bg)) 70%, rgb(255 255 255) 30%);
+  border-radius: 1rem; /* rounded-2xl */
+  padding: 1.5rem; /* p-6 */
+  border-width: 1px; /* border */
+  border-style: solid; /* border */
+  border-color: rgb(var(--card-border));
+.kbd {
+  display: inline-flex; /* inline-flex */
+  align-items: center; /* items-center */
+  border-radius: 0.375rem; /* rounded-md */
+  border-width: 1px; /* border */
+  border-style: solid; /* border */
+  padding-left: 0.5rem; /* px-2 */
+  padding-right: 0.5rem; /* px-2 */
+  padding-top: 0.125rem; /* py-0.5 */
+  padding-bottom: 0.125rem; /* py-0.5 */
+  font-size: 0.75rem; /* text-xs */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* font-mono */
+}
+/* Accesibilidad motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}}}
