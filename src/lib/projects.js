@@ -13,23 +13,35 @@ function readJsonSafe(filePath) {
   }
 }
 
+function normalize(p) {
+  const links = (p && typeof p === 'object' && p.links && typeof p.links === 'object') ? p.links : {};
+  return {
+    slug: p?.slug ?? '',
+    title: p?.title ?? 'Sin título',
+    summary: p?.summary ?? '',
+    highlights: Array.isArray(p?.highlights) ? p.highlights : [],
+    stack: Array.isArray(p?.stack) ? p.stack : [],
+    metric: p?.metric ?? '',
+    links, // <- SIEMPRE objeto
+    cover: p?.cover ?? '',
+    star: p?.star ?? null,
+    images: Array.isArray(p?.images) ? p.images : []
+  };
+}
+
 export function getAllProjects() {
-  if (!fs.existsSync(DIR)) {
-    console.warn('[projects] Carpeta no encontrada:', DIR);
-    return [];
-  }
+  if (!fs.existsSync(DIR)) return [];
   const files = fs.readdirSync(DIR).filter(f => f.endsWith('.json'));
-  const list = files
+  return files
     .map((f) => readJsonSafe(path.join(DIR, f)))
     .filter(Boolean)
-    .filter(p => typeof p.slug === 'string' && p.slug.trim().length > 0); // << valida slug
-  return list.sort((a, b) => a.title.localeCompare(b.title));
+    .map(normalize)
+    .filter(p => typeof p.slug === 'string' && p.slug.trim().length > 0)
+    .sort((a, b) => a.title.localeCompare(b.title));
 }
 
 export function getAllSlugs() {
-  return getAllProjects()
-    .map(p => p.slug)
-    .filter(s => typeof s === 'string' && s.trim().length > 0); // << sólo strings
+  return getAllProjects().map(p => p.slug).filter(Boolean);
 }
 
 export function getProjectBySlug(slug) {

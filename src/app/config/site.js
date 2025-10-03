@@ -1,16 +1,32 @@
 const site = {
   name: 'Islam El Mrabet',
-  title: 'Full-Stack & Automation',
-  description: 'Desarrollo full-stack con foco en automatización, datos e IA. Productos rápidos y medibles.',
-  url: 'https://TU-DOMINIO.vercel.app',
+  title: 'Full-stack • Automatización • Datos • IA aplicada',
+  description:
+    'Construyo herramientas que ahorran tiempo y dinero. React/Next, FastAPI, SQL Server, PostgreSQL, ETL e IA aplicada.',
+  url: 'https://tu-dominio.vercel.app',
   locale: 'es-ES',
+  twitter: '@tu_usuario',
+  image: '/og-default.png',
+  keywords: [
+    'Islam El Mrabet',
+    'desarrollador full stack',
+    'automatización',
+    'react',
+    'next.js',
+    'fastapi',
+    'sql server',
+    'postgresql',
+    'etl',
+    'ia aplicada'
+  ],
   author: {
     name: 'Islam El Mrabet',
     links: {
       github: 'https://github.com/IslamReact',
-      linkedin: 'https://www.linkedin.com/in/',
-      email: 'mailto:tuemail@example.com',
-    },
-  },
+      linkedin: 'https://www.linkedin.com/in/tu-perfil/',
+      email: 'mailto:islam@example.com'
+    }
+  }
 };
+
 export default site;
