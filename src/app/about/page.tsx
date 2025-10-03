@@ -1,6 +1,7 @@
 import Header from '@/app/components/layout/header';
 import Footer from '@/app/components/layout/footer';
 import Container from '@/app/components/layout/container';
+import PageHero from '@/app/components/features/common/PageHero';
 
 export const metadata = {
   title: 'Sobre mí | Islam El Mrabet',
@@ -12,6 +13,13 @@ export default function AboutPage() {
     <>
       <Header />
       <main id="main-content">
+        <PageHero
+          badgeText="Sobre mí"
+          title={'Soy Islam, desarrollador <span class="grad-main">full-stack</span> orientado a automatización y datos.'}
+          subtitle="Construyo productos rápidos, medibles y listos para negocio. React/Next · FastAPI · SQL Server/PostgreSQL · ETL e IA aplicada."
+          ctaHref="/#proyectos"
+          ctaLabel="Ver proyectos ›"
+        />
         <section className="section" style={{ paddingTop: '3.5rem' }}>
           <Container>
             <h1 className="display" style={{ fontSize: '2.25rem', fontWeight: 700, lineHeight: 1.1 }}>

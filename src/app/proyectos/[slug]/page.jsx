@@ -4,6 +4,8 @@ import Header from '@/app/components/layout/header';
 import Footer from '@/app/components/layout/footer';
 import Container from '@/app/components/layout/container';
 import { getAllSlugs, getProjectBySlug } from '@/lib/projects';
+import PageHero from '@/app/components/features/common/PageHero';
+
 
 // Pre-render estático: genera las rutas
 export function generateStaticParams() {
@@ -40,6 +42,14 @@ export default function ProjectPage({ params }) {
       <>
         <Header />
           <main id="main-content" className="section">  
+            <PageHero
+              badgeText="Proyecto"
+              title={titleHtml}
+              subtitle={p.summary || ''}
+              ctaHref={p.links?.demo || p.links?.code || '/#contacto'}
+              ctaLabel={p.links?.demo ? 'Ver demo ›' : (p.links?.code ? 'Ver código ›' : 'Contactar ›')}
+              rightPlaceholder={true}
+            />
           <Container>
             <h1 style={{ fontSize: '1.75rem', fontWeight: 600 }}>Proyecto no encontrado</h1>
             <p style={{ marginTop: '0.5rem' }}>

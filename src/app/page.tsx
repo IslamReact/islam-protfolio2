@@ -3,6 +3,7 @@ import Footer from '@/app/components/layout/footer';
 import Hero from '@/app/components/features/home/Hero';
 import ProjectsSection from '@/app/components/features/home/ProjectSection';
 import AboutSection from '@/app/components/features/home/AboutSection';
+import Highlights from '@/app/components/features/home/Highlights';
 import ContactSection from '@/app/components/features/home/ContactSection';
 
 export default function HomePage() {
@@ -11,6 +12,7 @@ export default function HomePage() {
       <Header />
       <main id="main-content">
         <Hero />
+        <Highlights />
         <AboutSection />
         <ProjectsSection />
         <ContactSection />

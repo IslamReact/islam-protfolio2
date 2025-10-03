@@ -1,6 +1,8 @@
 import Header from '@/app/components/layout/header';
 import Footer from '@/app/components/layout/footer';
 import Container from '@/app/components/layout/container';
+import PageHero from '@/app/components/features/common/PageHero';
+
 
 export const metadata = {
   title: 'Uses | Islam El Mrabet',
@@ -26,12 +28,18 @@ function Section({ title, items }: SectionProps) {
     </section>
   );
 }
-
-export default function UsesPage() {
+  export default function UsesPage() {
   return (
     <>
       <Header />
       <main id="main-content">
+        <PageHero
+          badgeText="Stack & Setup"
+          title={'Mis <span class="grad-main">herramientas</span> de trabajo diarias'}
+          subtitle="Editor, terminal, librerías, backend, datos, infraestructura y hardware con los que soy más rápido y fiable."
+          ctaHref="/#contacto"
+          ctaLabel="¿Hablamos? ›"
+        />
         <div className="section" style={{ paddingTop: '3.5rem' }}>
           <Container>
             <h1 className="display" style={{ fontSize: '2rem', fontWeight: 700 }}>Uses</h1>
