@@ -1,8 +1,19 @@
 {
+  "slug": "excel-to-sql",
   "title": "Excel → SQL (Internal Tool)",
   "summary": "Convierte plantillas Excel en scripts SQL con validación y rollback.",
   "highlights": ["Auto-map por nombre", "Validación de duplicados", "Rollback generator"],
   "stack": ["React", "FastAPI", "SQL Server", "PostgreSQL"],
   "metric": "-42% tiempo de carga",
-  "links": { "demo": "#", "code": "#" }
+  "links": { "demo": "#", "code": "#" },
+  "cover": "/projects/excel-to-sql/cover.webp",
+  "star": {
+    "s": "Departamento con plantillas Excel manuales y errores frecuentes.",
+    "t": "Automatizar la generación de scripts SQL consistentes y auditables.",
+    "a": "Desarrollo de app React + FastAPI con validaciones, auto-map y rollback generator.",
+    "r": "Reducción de tiempos de carga en un 42% y caída del error humano en inserciones."
+  },
+  "images": [
+    { "src": "/projects/excel-to-sql/screen-1.webp", "alt": "Vista mapping", "width": 1280, "height": 768 }
+  ]
 }

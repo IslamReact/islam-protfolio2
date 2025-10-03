@@ -1,8 +1,24 @@
 {
+  "slug": "data-migration-suite",
   "title": "Data Migration Suite (SINA)",
-  "summary": "Framework para cargas masivas ORMA_* y VITA_* con auditoría y trazabilidad.",
-  "highlights": ["ETL seguro", "IF NOT EXISTS", "Cursors optimizados"],
-  "stack": ["Python", "SQL Server"],
+  "summary": "Framework de migraciones masivas para SINA Suite (tablas ORMA_* y VITA_*) con auditoría y validaciones.",
+  "highlights": [
+    "ETL seguro con control transaccional",
+    "IF NOT EXISTS y validación previa",
+    "Cursors/loops optimizados por lotes",
+    "Logs de auditoría y trazabilidad"
+  ],
+  "stack": ["Python", "SQL Server", "PostgreSQL"],
   "metric": "+99.8% integridad en migraciones",
-  "links": { "demo": "#", "code": "#" }
+  "links": { "demo": "#", "code": "#" },
+  "cover": "/projects/data-migration-suite/cover.webp",
+  "star": {
+    "s": "Conjunto de centros con historiales heterogéneos en SINA; duplicidades y riesgo de inconsistencias.",
+    "t": "Diseñar un proceso replicable y auditable para migrar ORMA_* y VITA_* a entornos objetivo.",
+    "a": "Framework Python + SQL (procedimientos y scripts) con validación previa, control de duplicados y auditoría por lote.",
+    "r": "Aumento de la integridad y coherencia (+99.8%), reducción de incidencias y migraciones repetibles por centro."
+  },
+  "images": [
+    { "src": "/projects/data-migration-suite/cover.webp", "alt": "Dashboard de migración", "width": 1600, "height": 900 }
+  ]
 }
