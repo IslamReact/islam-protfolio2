@@ -1,5 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
+import HeroIllustration from './HelloIlustration';
 
 function Badge({ children }) {
   return (
@@ -42,7 +43,15 @@ function CTA({ href, children }) {
 export default function Hero() {
   return (
     <section className="section" style={{ paddingTop: '6rem', paddingBottom: '5rem', position: 'relative', overflow: 'hidden' }}>
-      <div className="container-base" style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 32 }}>
+<div
+  className="container-base"
+  style={{
+    display: 'grid',
+    gridTemplateColumns: '1.1fr 0.9fr',
+    gap: 32,
+    alignItems: 'center'   // <-- centra verticalmente texto e ilustración
+  }}
+>
         {/* Columna izquierda: TU contenido */}
         <div>
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
@@ -80,26 +89,15 @@ export default function Hero() {
         </div>
 
         {/* Columna derecha: placeholder visual (igual que antes) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.05 }}
-          aria-hidden
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
-          <div
-            style={{
-              width: '80%', maxWidth: 520, aspectRatio: '16/9',
-              borderRadius: 24,
-              background:
-                'radial-gradient(120% 120% at 20% 20%, rgba(89,192,245,0.18), transparent 60%), ' +
-                'radial-gradient(120% 120% at 80% 60%, rgba(168,130,255,0.22), transparent 60%), ' +
-                'rgba(255,255,255,0.03)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              boxShadow: 'var(--shadow-soft)'
-            }}
-          />
-        </motion.div>
+       <motion.div
+  initial={{ opacity: 0, scale: 0.98 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.6, delay: 0.05 }}
+  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+>
+  <HeroIllustration />
+</motion.div>
+
       </div>
 
       {/* Iconos fantasma (igual que antes) */}

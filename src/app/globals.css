@@ -326,3 +326,28 @@ body {
 .parallax {
   perspective: 900px;
 }
+
+/* --- Ilustración hero (scribble) --- */
+@keyframes float-soft {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.motion-safe-float {
+  animation: float-soft 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe-float {
+    animation: none !important;
+  }
+}
