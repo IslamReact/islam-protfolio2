@@ -1,0 +1,8 @@
+{
+  "title": "Excel → SQL (Internal Tool)",
+  "summary": "Convierte plantillas Excel en scripts SQL con validación y rollback.",
+  "highlights": ["Auto-map por nombre", "Validación de duplicados", "Rollback generator"],
+  "stack": ["React", "FastAPI", "SQL Server", "PostgreSQL"],
+  "metric": "-42% tiempo de carga",
+  "links": { "demo": "#", "code": "#" }
+}

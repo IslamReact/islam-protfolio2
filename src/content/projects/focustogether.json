@@ -1,0 +1,8 @@
+{
+  "title": "FocusTogether (SaaS)",
+  "summary": "Productividad con salas WebRTC, Pomodoro y gamificación.",
+  "highlights": ["Microservicios", "Prisma/Postgres", "Next.js"],
+  "stack": ["Next.js", "NestJS", "PostgreSQL"],
+  "metric": "+35% retención de sesión",
+  "links": { "demo": "#", "code": "#" }
+}

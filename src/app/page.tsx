@@ -1,6 +1,9 @@
 import Header from '@/app/components/layout/header';
 import Footer from '@/app/components/layout/footer';
 import Hero from '@/app/components/features/home/Hero';
+import ProjectsSection from '@/app/components/features/home/ProjectSection';
+import AboutSection from '@/app/components/features/home/AboutSection';
+import ContactSection from '@/app/components/features/home/ContactSection';
 
 export default function HomePage() {
   return (
@@ -8,7 +11,9 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
-        {/* Próximas secciones: señales, proyectos, contacto… (las añadiremos en siguientes partes) */}
+        <AboutSection />
+        <ProjectsSection />
+        <ContactSection />
       </main>
       <Footer />
     </>

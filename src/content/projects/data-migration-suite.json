@@ -1,0 +1,8 @@
+{
+  "title": "Data Migration Suite (SINA)",
+  "summary": "Framework para cargas masivas ORMA_* y VITA_* con auditoría y trazabilidad.",
+  "highlights": ["ETL seguro", "IF NOT EXISTS", "Cursors optimizados"],
+  "stack": ["Python", "SQL Server"],
+  "metric": "+99.8% integridad en migraciones",
+  "links": { "demo": "#", "code": "#" }
+}
