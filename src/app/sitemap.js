@@ -1,4 +1,4 @@
-import site from '@/config/site';
+import site from '@/app/config/site';
 import { getAllProjects } from '@/lib/projects';
 
 export default async function sitemap() {
