@@ -25,7 +25,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
-            className="text-[40px] md:text-[52px] font-semibold leading-[1.1]"
+            className="display text-[40px] md:text-[52px] font-semibold leading-[1.1]"
           >
             <span className="u2050-gradient-text">Construyo herramientas</span> que ahorran tiempo y dinero.
           </motion.h1>

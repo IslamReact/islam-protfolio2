@@ -1,8 +1,9 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
+import { Inter, Sora } from 'next/font/google';
 import site from '@/app/config/site';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const sora  = Sora({ subsets: ['latin'], variable: '--font-sora' });
 
 export const metadata = {
   metadataBase: new URL(site.url),
@@ -17,7 +18,8 @@ import { ReactNode } from 'react';
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.variable} ${sora.variable}`}>{children}</body>
     </html>
   );
 }
+
