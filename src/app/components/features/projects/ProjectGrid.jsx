@@ -1,6 +1,5 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import Link from 'next/link';
 import ProjectCardAnimated from './ProjectCardAnimated';
 
 function getProjects() {
@@ -18,9 +17,7 @@ export default function ProjectGrid() {
       className="sm:grid-cols-2 lg:grid-cols-3 grid"
     >
       {projects.map((p, i) => (
-        <Link key={p.slug} href={`/proyectos/${p.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <ProjectCardAnimated p={p} index={i} />
-        </Link>
+        <ProjectCardAnimated key={p.slug || p.title} p={p} index={i} />
       ))}
     </div>
   );

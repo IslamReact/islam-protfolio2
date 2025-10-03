@@ -14,16 +14,24 @@ export function generateStaticParams() {
 export function generateMetadata({ params }) {
   const p = getProjectBySlug(params.slug);
   if (!p) return { title: 'Proyecto no encontrado' };
+
   const title = `${p.title} – Proyecto`;
   const description = p.summary || 'Proyecto';
-  const images = p.cover ? [{ url: p.cover, width: 1200, height: 630, alt: p.title }] : [];
+  const og = `/api/og?title=${encodeURIComponent(p.title)}&desc=${encodeURIComponent(p.summary || '')}`;
+
   return {
     title,
     description,
-    openGraph: { title, description, images, type: 'article' },
-    twitter: { card: 'summary_large_image' }
+    openGraph: {
+      title,
+      description,
+      images: [{ url: og, width: 1200, height: 630, alt: p.title }],
+      type: 'article'
+    },
+    twitter: { card: 'summary_large_image', images: [og] }
   };
 }
+
 
 export default function ProjectPage({ params }) {
   const p = getProjectBySlug(params.slug);
@@ -31,7 +39,7 @@ export default function ProjectPage({ params }) {
     return (
       <>
         <Header />
-        <main className="section">
+          <main id="main-content" className="section">  
           <Container>
             <h1 style={{ fontSize: '1.75rem', fontWeight: 600 }}>Proyecto no encontrado</h1>
             <p style={{ marginTop: '0.5rem' }}>
@@ -76,13 +84,14 @@ export default function ProjectPage({ params }) {
             <Container>
               <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
                 <Image
-                  src={p.cover}
-                  alt={p.title}
-                  width={1600}
-                  height={900}
-                  style={{ width: '100%', height: 'auto', display: 'block' }}
-                  priority
-                />
+  src={p.cover}
+  alt={p.title}
+  width={1600}
+  height={900}
+  style={{ width: '100%', height: 'auto', display: 'block' }}
+  sizes="(min-width: 1024px) 1024px, 100vw"
+  priority
+/>
               </div>
             </Container>
           </section>

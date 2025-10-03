@@ -21,7 +21,13 @@ export default function ProjectCardAnimated({ p, index = 0 }) {
         height: '100%'
       }}
     >
-      <h3 style={{ fontSize: '1.125rem', fontWeight: 600 }}>{p.title}</h3>
+      {/* Título enlazado: único <a> “principal” */}
+      <h3 style={{ fontSize: '1.125rem', fontWeight: 600, lineHeight: 1.25 }}>
+        <Link href={`/proyectos/${p.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          {p.title}
+        </Link>
+      </h3>
+
       <p style={{ marginTop: '0.5rem', opacity: 0.8, fontSize: '0.95rem' }}>{p.summary}</p>
 
       {Array.isArray(p.highlights) && p.highlights.length > 0 && (
@@ -41,7 +47,7 @@ export default function ProjectCardAnimated({ p, index = 0 }) {
                 border: '1px solid rgba(0,0,0,0.1)',
                 padding: '2px 6px',
                 borderRadius: '6px',
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace'
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
               }}
               className="dark:border-[rgba(255,255,255,0.15)]"
             >
@@ -53,7 +59,9 @@ export default function ProjectCardAnimated({ p, index = 0 }) {
 
       {p.metric && <p style={{ marginTop: '0.75rem', opacity: 0.7, fontSize: '0.8rem' }}>{p.metric}</p>}
 
+      {/* Enlaces secundarios: ya NO están anidados dentro de otro <a> */}
       <div style={{ marginTop: 'auto', paddingTop: '1rem', display: 'flex', gap: '0.75rem' }}>
+        <Link href={`/proyectos/${p.slug}`} className="underline">Ver proyecto</Link>
         {p.links?.demo && <Link href={p.links.demo} className="underline">Demo</Link>}
         {p.links?.code && <Link href={p.links.code} className="underline">Código</Link>}
       </div>

@@ -18,8 +18,10 @@ import { ReactNode } from 'react';
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${inter.variable} ${sora.variable}`}>{children}</body>
+      <body className={`${inter.variable} ${sora.variable}`}>
+        <a href="#main-content" className="skip-link">Saltar al contenido principal</a>
+        {children}
+      </body>
     </html>
   );
 }
-
