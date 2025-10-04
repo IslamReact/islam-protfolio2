@@ -23,8 +23,8 @@ const site = {
     name: 'Islam El Mrabet',
     links: {
       github: 'https://github.com/IslamReact',
-      linkedin: 'https://www.linkedin.com/in/tu-perfil/',
-      email: 'mailto:islam@example.com'
+      linkedin: 'https://www.linkedin.com/in/islam-el-mrabet-larhzaoui-b0441629a/',
+      email: 'mailto:islamelmrabet04@gmail.com'
     }
   }
 };

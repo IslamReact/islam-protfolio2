@@ -157,7 +157,6 @@ export default function AboutPage() {
                   Hablemos sobre cómo automatizar y medir impacto en tus procesos clave.
                 </p>
                 <Link href="/#contacto" className="cta-glow">Contactar ›</Link>
-                <Link href="/#contacto" className="cta-glow">Contactar ›</Link>
               </div>
             </div>
           </Container>
