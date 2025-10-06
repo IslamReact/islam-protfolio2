@@ -77,7 +77,7 @@
     }
 }
 
-/* === avisos de estado === */
+/* estados */
 .alert {
     padding: 12px;
     margin-bottom: 10px;
@@ -116,7 +116,6 @@
 
 .me {
     grid-template-columns: minmax(0, 1fr) auto;
-    /* alinea a la derecha */
 }
 
 .ai .avatar {
@@ -199,7 +198,7 @@
     padding: 4px 8px;
 }
 
-/* caret de escritura */
+/* caret */
 .caret {
     display: inline-block;
     width: 8px;
@@ -214,11 +213,162 @@
 
     0%,
     49% {
-        opacity: 1;
+        opacity: 1
     }
 
     50%,
     100% {
-        opacity: 0;
+        opacity: 0
     }
+}
+
+/* === CTA destacado === */
+.ctaPrimary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    /* un poco más grande */
+    border-radius: 12px;
+    /* más suave */
+    font-weight: 800;
+    letter-spacing: .2px;
+    isolation: isolate;
+    /* para overlays */
+    overflow: hidden;
+}
+
+/* halo animado muy sutil alrededor */
+.ctaPrimary::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: conic-gradient(from 0deg,
+            rgba(124, 58, 237, .55),
+            rgba(6, 182, 212, .55),
+            rgba(124, 58, 237, .55));
+    filter: blur(14px);
+    opacity: .35;
+    z-index: 0;
+    animation: cta-spin 6s linear infinite;
+    pointer-events: none;
+}
+
+/* brillo interior al hover/focus */
+.ctaPrimary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(80% 120% at 50% 0%,
+            rgba(255, 255, 255, .15), transparent 60%);
+    opacity: 0;
+    transition: opacity .2s ease;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.ctaPrimary:hover::after,
+.ctaPrimary:focus-visible::after {
+    opacity: .12;
+}
+
+/* contenido por encima de los overlays */
+.ctaPrimary>* {
+    position: relative;
+    z-index: 1;
+}
+
+/* foco accesible */
+.ctaPrimary:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 3px rgba(6, 182, 212, .45),
+        0 0 0 6px rgba(124, 58, 237, .25);
+}
+
+/* estado disabled / enviando */
+.ctaPrimary[disabled],
+.ctaPrimary[data-busy="true"] {
+    cursor: not-allowed;
+    opacity: .9;
+}
+
+/* spinner para “Enviando…” */
+.spinner {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    animation: cta-rot .9s linear infinite;
+}
+
+/* animaciones */
+@keyframes cta-rot {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes cta-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Respeto a usuarios con reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+    .ctaPrimary::before {
+        animation: none;
+    }
+
+    .spinner {
+        animation: none;
+    }
+}
+
+/* === Tipografía iOS-like para la respuesta (ISLAM·IA) === */
+.ai .bubbleText,
+.mono {
+    white-space: pre-wrap;
+    font-family:
+        "SF Pro Rounded",
+        "SF Pro Text",
+        -apple-system,
+        system-ui,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        "Noto Sans",
+        Arial,
+        sans-serif;
+    font-size: 14.5px;
+    /* un pelín mayor, más amable */
+    line-height: 1.8;
+    /* más respiración */
+    letter-spacing: 0.1px;
+    /* sutil para legibilidad */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* (opcional) hora y metadatos también más suaves */
+.ai .meta {
+    font-family:
+        "SF Pro Rounded",
+        "SF Pro Text",
+        -apple-system,
+        system-ui,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        "Noto Sans",
+        Arial,
+        sans-serif;
 }

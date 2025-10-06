@@ -5,7 +5,7 @@
   "year": 2024,
   "stack": ["React", "FastAPI", "PostgreSQL", "SQL Server", "MySQL"],
   "category": "Datos/SQL",
-  "links": { "demo": "/videos", "code": "#" },
+  "links": {"code": "https://excel-to-sql-1.onrender.com" },
   "cover": "/projects/excel-to-sql/cover.webp",
   "accent": ["#7c3aed", "#06b6d4"],
   "metrics": [

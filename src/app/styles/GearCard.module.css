@@ -1,24 +1,125 @@
 .card {
-    padding: 10px;
+    position: relative;
+    /* para posicionar la insignia */
     display: grid;
     gap: 10px;
-    cursor: default;
-    /* ya no es “clicable” */
-    transition: transform .15s ease;
+    padding: 12px;
+    border-radius: 14px;
 }
 
-.card:hover {
-    transform: translateY(-2px);
+/* ===== Insignia de categoría impactante ===== */
+.catBadge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, .96);
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .18);
+    background: rgba(15, 15, 20, .45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, .06) inset,
+        0 6px 22px rgba(0, 0, 0, .28);
+    overflow: hidden;
+    isolation: isolate;
 }
 
-.media {
+/* halo animado suave */
+.catBadge::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    z-index: -1;
+    filter: blur(24px);
+    opacity: .55;
+    transform: rotate(0deg);
+    animation: cat-spin 10s linear infinite;
+    background: conic-gradient(from 0deg,
+            var(--cat-a),
+            var(--cat-b),
+            var(--cat-a));
+}
+
+/* puntito decorativo */
+.catDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: currentColor;
+    box-shadow: 0 0 12px currentColor;
+}
+
+/* Paletas por categoría (usamos data-cat del <article>) */
+.card[data-cat="Laptop"] {
+    --cat-a: #7c3aed;
+    --cat-b: #06b6d4;
+}
+
+.card[data-cat="Monitor"] {
+    --cat-a: #06b6d4;
+    --cat-b: #3b82f6;
+}
+
+.card[data-cat="Keyboard"] {
+    --cat-a: #f43f5e;
+    --cat-b: #f59e0b;
+}
+
+.card[data-cat="Mouse"] {
+    --cat-a: #22c55e;
+    --cat-b: #06b6d4;
+}
+
+.card[data-cat="Dock"] {
+    --cat-a: #6366f1;
+    --cat-b: #14b8a6;
+}
+
+.card[data-cat="Microphone"] {
+    --cat-a: #f59e0b;
+    --cat-b: #ef4444;
+}
+
+.card[data-cat="Pad"] {
+    --cat-a: #94a3b8;
+    --cat-b: #64748b;
+}
+
+.card[data-cat="Accessory"] {
+    --cat-a: #a855f7;
+    --cat-b: #60a5fa;
+}
+
+/* Animación */
+@keyframes cat-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .catBadge::before {
+        animation: none;
+    }
+}
+
+/* ===== Thumbnail ===== */
+.thumb {
     border-radius: 12px;
     border: 1px solid rgba(var(--text), .12);
     background: rgba(255, 255, 255, .02);
     overflow: hidden;
     aspect-ratio: 16/9;
-    display: grid;
-    place-items: center;
 }
 
 .img {
@@ -26,66 +127,275 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    filter: saturate(1.06) contrast(1.02);
 }
 
-.fallback {
-    font-size: 34px;
-}
-
+/* ===== Body ===== */
 .body {
     display: grid;
-    gap: 6px;
+    gap: 8px;
 }
 
-.top {
+.header {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .title {
     font-weight: 800;
+    letter-spacing: -.2px;
+    font-size: 18px;
 }
 
-.badge {
-    font-size: 11px;
-    padding: 4px 8px;
+.usage {
     border-radius: 999px;
+    padding: 6px 10px;
     border: 1px solid rgba(var(--text), .14);
     background: rgba(255, 255, 255, .03);
+    font-size: 12px;
+    color: rgba(var(--text), .85);
 }
 
-.meta {
-    color: rgba(var(--text), .78);
-    font-size: 13px;
+.brand {
+    font-weight: 700;
+    color: rgba(var(--text), .92);
 }
 
 .notes {
     color: rgba(var(--text), .86);
-    font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
-.specs {
+/* ===== Specs chips ===== */
+.chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
+    margin-top: 2px;
 }
 
-.spec {
-    font-size: 11px;
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 10px;
+    padding: 6px 10px;
     border: 1px solid rgba(var(--text), .12);
-    border-radius: 8px;
-    padding: 4px 8px;
     background: rgba(255, 255, 255, .02);
+    font-size: 12px;
+    color: rgba(var(--text), .9);
 }
 
-.ctas {
-    display: flex;
+.chip strong {
+    font-weight: 800;
+}
+
+/* ===== Card base ===== */
+.card {
+    position: relative;
+    display: grid;
     gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 6px;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .03);
+    border: 1px solid rgba(var(--text), .10);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    overflow: hidden;
 }
 
-/* ✅ Se eliminaron todas las clases de overlay/drawer */
+/* Glow/borde degradado */
+.glow {
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background:
+        linear-gradient(140deg, var(--a, #7c3aed), transparent 40%),
+        linear-gradient(-140deg, var(--b, #06b6d4), transparent 40%);
+    opacity: .18;
+    filter: blur(14px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Hover elevación */
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .22);
+    border-color: rgba(var(--text), .14);
+}
+
+/* Variables de color por categoría */
+.card[data-cat="Laptop"] {
+    --a: #7c3aed;
+    --b: #06b6d4;
+}
+
+.card[data-cat="Monitor"] {
+    --a: #06b6d4;
+    --b: #60a5fa;
+}
+
+.card[data-cat="Keyboard"] {
+    --a: #f43f5e;
+    --b: #f59e0b;
+}
+
+.card[data-cat="Mouse"] {
+    --a: #22c55e;
+    --b: #06b6d4;
+}
+
+.card[data-cat="Dock"] {
+    --a: #6366f1;
+    --b: #14b8a6;
+}
+
+.card[data-cat="Microphone"] {
+    --a: #f59e0b;
+    --b: #ef4444;
+}
+
+.card[data-cat="Pad"] {
+    --a: #94a3b8;
+    --b: #64748b;
+}
+
+.card[data-cat="Accessory"] {
+    --a: #a855f7;
+    --b: #60a5fa;
+}
+
+/* ===== Header ===== */
+.top {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.iconBadge {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    color: white;
+    background: linear-gradient(135deg, var(--a), var(--b));
+    box-shadow: 0 4px 18px color-mix(in srgb, var(--a) 38%, transparent);
+    border: 1px solid rgba(255, 255, 255, .2);
+}
+
+.titleBlock {
+    min-width: 0;
+}
+
+.title {
+    font-weight: 900;
+    letter-spacing: -.2px;
+    font-size: 18px;
+    margin: 0;
+}
+
+.sub {
+    font-size: 12px;
+    color: rgba(var(--text), .75);
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Uso (pill) */
+.usage {
+    border-radius: 9999px;
+    font-size: 12px;
+    padding: 6px 10px;
+    border: 1px solid rgba(255, 255, 255, .18);
+    background: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.uDaily {
+    background: color-mix(in srgb, var(--a) 28%, rgba(255, 255, 255, .08));
+}
+
+.uSecondary {
+    background: color-mix(in srgb, var(--b) 26%, rgba(255, 255, 255, .08));
+}
+
+.uBackup {
+    background: rgba(255, 255, 255, .08);
+}
+
+/* ===== Imagen (opcional) ===== */
+.thumb {
+    position: relative;
+    z-index: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(var(--text), .10);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--a) 16%, transparent), color-mix(in srgb, var(--b) 12%, transparent));
+    aspect-ratio: 16/9;
+}
+
+.img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(1.06) contrast(1.02);
+}
+
+/* ===== Body ===== */
+.notes {
+    z-index: 1;
+    color: rgba(var(--text), .88);
+    line-height: 1.6;
+    margin-top: 2px;
+}
+
+.chips {
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(var(--text), .12);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+    font-size: 12px;
+    color: rgba(var(--text), .95);
+}
+
+.k {
+    font-weight: 800;
+    text-transform: lowercase;
+    color: rgba(var(--text), .8);
+}
+
+.v {
+    font-weight: 700;
+    color: rgba(var(--text), .95);
+}
+
+/* Accesibilidad + motion */
+@media (prefers-reduced-motion: reduce) {
+    .card {
+        transition: none;
+    }
+}

@@ -6,7 +6,7 @@
   "stack": ["Next.js", "Realtime", "Analytics"],
   "category": "Frontend",
   "links": { "demo": "/videos", "code": "#" },
-  "cover": "/projects/focustogether/cover.webp",
+  "cover": "/projects/focustogether/cover-1.webp",
   "accent": ["#f59e0b", "#7c3aed"],
   "metrics": [
     { "label": "Usuarios", "value": "1.2k" },

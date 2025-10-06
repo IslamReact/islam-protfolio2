@@ -66,44 +66,55 @@ export default function ProjectsCommandDeck({ items }: Props) {
   }, [selected]);
 
   return (
-    <div className="pcd-root neon-card" style={{ padding: 16, backgroundImage: bg, backgroundBlendMode: 'screen' }}>
-      {/* Head */}
-      <div className="pcd-head">
-        <div>
-          <div className="pcd-overline">Projects Command Deck</div>
-          <h1 className="pcd-title">
-            Portafolio <span className="grad-main">futurista</span>, claro y accionable
-          </h1>
-          <p className="pcd-sub">Busca como “command palette”, filtra por categoría y abre un <strong>case study</strong>.</p>
+    <div className="pcd-root neon-card" style={{ padding: 16, backgroundImage: bg, backgroundBlendMode: 'screen', borderRadius: 20 }}>
+      {/* TOP: head + command bar */}
+      <div className="pcd-top">
+        {/* Head */}
+        <div className="pcd-head">
+          <div>
+            <div className="pcd-overline">Projects Command Deck</div>
+            <h1 className="pcd-title">
+              Portafolio <span className="grad-main">futurista</span>, claro y accionable
+            </h1>
+            <p className="pcd-sub">Busca como “command palette”, filtra por categoría y abre un <strong>case study</strong>.</p>
+          </div>
+          <div className="pcd-shortcuts">
+            <kbd className="pcd-kbd">⌘</kbd>
+            <kbd className="pcd-kbd">K</kbd>
+            <span className="pcd-shortcuts-hint">buscar</span>
+          </div>
         </div>
-        <div className="pcd-shortcuts">
-          <kbd className="pcd-kbd">⌘</kbd>
-          <kbd className="pcd-kbd">K</kbd>
-          <span className="pcd-shortcuts-hint">buscar</span>
+
+        {/* Command bar */}
+        <div className="pcd-command neon-card">
+          <input
+            ref={inputRef}
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Buscar por título, tag o descripción… (⌘K)"
+            aria-label="Buscar proyectos"
+            className="pcd-input"
+          />
+          <div className="pcd-filters">
+            {categories.map((c) => {
+              const active = c === cat;
+              return (
+                <button
+                  key={c}
+                  onClick={() => setCat(c)}
+                  aria-pressed={active}
+                  className={active ? 'btn-primary pcd-chip' : 'btn-ghost pcd-chip'}
+                >
+                  {c}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Command bar */}
-      <div className="pcd-command neon-card">
-        <input
-          ref={inputRef}
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Buscar por título, tag o descripción… (⌘K)"
-          aria-label="Buscar proyectos"
-          className="pcd-input"
-        />
-        <div className="pcd-filters">
-          {categories.map((c) => {
-            const active = c === cat;
-            return (
-              <button key={c} onClick={() => setCat(c)} aria-pressed={active} className={active ? 'btn-primary pcd-chip' : 'btn-ghost pcd-chip'}>
-                {c}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      {/* Separador visual entre top y grid */}
+      <div className="pcd-separator" aria-hidden />
 
       {/* Grid */}
       <div className="pcd-grid">
@@ -190,7 +201,6 @@ export default function ProjectsCommandDeck({ items }: Props) {
                   ) : (
                     <a href="/contact" className="btn-primary">Pedir demo</a>
                   )}
-                  <a href={selected.links?.demo || '/videos'} className="btn-ghost">Ver demo</a>
                 </div>
               </div>
             </div>
@@ -201,6 +211,14 @@ export default function ProjectsCommandDeck({ items }: Props) {
       {/* estilos locales */}
       <style>{`
         .pcd-root{ position:relative; overflow:hidden }
+
+        .pcd-top{ margin-bottom: 18px; }
+        .pcd-separator{
+          height: 50px;
+          margin: 6px 0 20px;
+          background: linear-gradient(90deg, transparent, rgba(var(--text), .12), transparent);
+        }
+
         .pcd-overline{ text-transform:uppercase; letter-spacing:.2em; font-size:12px; color:rgba(6,182,212,.8); margin-bottom:4px }
         .pcd-title{ font-size:26px; font-weight:800; letter-spacing:-.2px }
         .pcd-sub{ color:rgba(var(--text),.82); margin-top:6px }
@@ -210,9 +228,9 @@ export default function ProjectsCommandDeck({ items }: Props) {
         .pcd-kbd{ display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:22px; padding:0 6px; border-radius:6px; border:1px solid rgba(255,255,255,.2); font-size:12px; color:rgba(255,255,255,.9); background:rgba(255,255,255,.05) }
         .pcd-shortcuts-hint{ font-size:12px; color:rgba(var(--text),.7) }
 
-        .pcd-command{ display:grid; gap:10px; padding:12px; margin-bottom:14px }
+        .pcd-command{ display:grid; gap:10px; padding:12px; margin-bottom: 0 }
         .pcd-input{ width:100%; border-radius:12px; border:1px solid rgba(var(--text),.14); background:rgba(255,255,255,.03); color:inherit; padding:12px 14px; outline:none }
-        .pcd-filters{ display:flex; flex-wrap:wrap; gap:8px }
+        .pcd-filters{ display:flex; flex-wrap:wrap; gap:8px; }
 
         .pcd-grid{ display:grid; gap:12px; grid-template-columns:repeat(3, minmax(0,1fr)) }
         .pcd-card{ display:flex; flex-direction:column; text-align:left; cursor:pointer; padding:10px; transition:transform .15s ease, box-shadow .15s ease }

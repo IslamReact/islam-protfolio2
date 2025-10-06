@@ -3,13 +3,17 @@
 
 import { useMemo, useState } from 'react';
 import type { GearItem, GearCategory, Usage } from '@/lib/gear';
-import styles from '..//../../styles/GearShowcase.module.css';
+import styles from '../../../styles/GearShowcase.module.css';
 import GearCard from './GetCard';
 
 type Props = { items: GearItem[] };
 
 const CATEGORY_ORDER: GearCategory[] = ['Laptop','Monitor','Keyboard','Mouse','Dock','Microphone','Pad','Accessory'];
 const USAGES: Usage[] = ['Daily','Secondary','Backup'];
+
+function hasImage(it: GearItem): boolean {
+  return typeof it.image === 'string' && it.image.trim().length > 0;
+}
 
 export default function GearShowcase({ items }: Props) {
   const [q, setQ] = useState('');
@@ -36,11 +40,13 @@ export default function GearShowcase({ items }: Props) {
     });
   }, [items, q, cat, useF]);
 
-  // Agrupar por categoría
+  // Agrupar por categoría (solo con imagen)
   const groups = useMemo(() => {
     const map = new Map<GearCategory, GearItem[]>();
     for (const c of CATEGORY_ORDER) map.set(c, []);
-    for (const it of filtered) map.get(it.category)!.push(it);
+    for (const it of filtered) {
+      if (hasImage(it)) map.get(it.category)!.push(it);
+    }
     return Array.from(map.entries()).filter(([,arr]) => arr.length > 0);
   }, [filtered]);
 
@@ -102,7 +108,10 @@ export default function GearShowcase({ items }: Props) {
               <span className={styles.count}>{arr.length} ítem(s)</span>
             </header>
             <div className={styles.grid}>
-              {arr.map(it => <GearCard key={it.slug} item={it} />)}
+              {arr.map(it => (
+                // arr ya viene filtrado con imagen; extra guard por si acaso
+                hasImage(it) ? <GearCard key={it.slug} item={it} /> : null
+              ))}
             </div>
           </section>
         ))}

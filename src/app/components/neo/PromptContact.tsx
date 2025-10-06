@@ -17,7 +17,7 @@ export default function PromptContact() {
   return (
     <div className={`neon-card ${styles.wrap}`}>
       <div className={styles.overline}>Prompt de contacto</div>
-      <h2 className={styles.title}>Cuéntame qué necesitas como si fueras una IA</h2>
+      <h2 className={styles.title}>Cuéntame qué necesitas</h2>
 
       <div className={styles.row}>
         <input

@@ -7,6 +7,8 @@ import SkillsPulse from '@/app/components/neo/about/SkillsPulse';
 import AboutFactsCompact from '@/app/components/neo/about/AboutFactsCompact';
 import AboutBioCompact from '@/app/components/neo/about/AboutBioCompact';
 import HighlightsGrid from '@/app/components/neo/about/HightlightsGrid';
+import TimelineIA from '@/app/components/neo/TimelineIA';
+
 
 export const metadata = {
   title: 'Sobre mí · Islam El Mrabet',
@@ -42,23 +44,10 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {/* VALUES + HIGHLIGHTS */}
-        <section aria-label="Valores y logros" style={{ padding: '6px 0 40px' }}>
-          <div className="container-base about-two-col">
-            {/* Valores */}
-            <div className="neon-card" style={{ padding: 14 }}>
-              <h2 style={{ fontWeight: 800, fontSize: 18, marginBottom: 10 }}>Valores</h2>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                {(about.values || []).map((v) => (
-                  <span key={v} className="btn-ghost" style={{ padding: '8px 12px', borderRadius: 999 }}>
-                    {v}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Highlights compactos */}
-            <HighlightsGrid highlights={about.highlights || []} />
+        {/* Timeline narrativo como versiones de un sistema IA */}
+        <section aria-label="Timeline IA" style={{ padding: '24px 0' }}>
+          <div className="container-base">
+            <TimelineIA />
           </div>
         </section>
 

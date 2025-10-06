@@ -1,10 +1,8 @@
 import Header from '@/app/components/layout/header';
 import Footer from '@/app/components/layout/footer';
-
 import FuturisticHero from '@/app/components/neo/FuturisticHero';
 import SkillGraph from '@/app/components/neo/SkillGraph';
 import LiveTerminal from '@/app/components/neo/LiveTerminal';
-import TimelineIA from '@/app/components/neo/TimelineIA';
 import PromptContact from '@/app/components/neo/PromptContact';
 
 export default function HomePage() {
@@ -28,13 +26,6 @@ export default function HomePage() {
         <section id="proyectos" aria-label="Proyectos en vivo" style={{ padding: '16px 0' }}>
           <div className="container-base">
             <LiveTerminal />
-          </div>
-        </section>
-
-        {/* Timeline narrativo como versiones de un sistema IA */}
-        <section aria-label="Timeline IA" style={{ padding: '24px 0' }}>
-          <div className="container-base">
-            <TimelineIA />
           </div>
         </section>
 
