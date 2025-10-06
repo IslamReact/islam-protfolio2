@@ -1,0 +1,49 @@
+[
+  {
+    "slug": "vscode",
+    "name": "Visual Studio Code",
+    "description": "Editor principal con GitLens, Tailwind y Prettier.",
+    "category": "Editor",
+    "tags": ["Tailwind", "GitLens", "Prettier"],
+    "icon": "🧩",
+    "snippet": "",
+    "year": 2025
+  },
+  {
+    "slug": "iterm2",
+    "name": "iTerm2 + zsh",
+    "description": "Terminal con zsh, autosuggestions y fzf.",
+    "category": "Terminal",
+    "tags": ["zsh", "fzf"],
+    "icon": "🖲️",
+    "snippet": "",
+    "year": 2025
+  },
+  {
+    "slug": "docker",
+    "name": "Docker Desktop",
+    "description": "Contenedores para APIs, DBs y workers locales.",
+    "category": "Backend",
+    "tags": ["Containers", "DevOps"],
+    "icon": "🐳",
+    "year": 2024
+  },
+  {
+    "slug": "postgresql",
+    "name": "PostgreSQL",
+    "description": "DB por defecto con JSONB e índices potentes.",
+    "category": "Datos/SQL",
+    "tags": ["SQL", "psql", "JSONB"],
+    "icon": "🐘",
+    "year": 2024
+  },
+  {
+    "slug": "fastapi",
+    "name": "FastAPI",
+    "description": "APIs rápidas con tipado y Pydantic.",
+    "category": "Backend",
+    "tags": ["Python", "Async", "Pydantic"],
+    "icon": "🚀",
+    "year": 2025
+  }
+]

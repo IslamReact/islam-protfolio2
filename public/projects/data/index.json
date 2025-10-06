@@ -1,0 +1,10 @@
+{
+  "order": [
+    "excel-to-sql",
+    "sina-automations",
+    "focustogether",
+    "cookconnect",
+    "automation-apis",
+    "data-migration-suite"
+  ]
+}

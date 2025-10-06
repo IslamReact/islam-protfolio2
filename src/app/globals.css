@@ -1,59 +1,249 @@
+/* ——— Tailwind base/utilities si las usas ——— */
 @import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 
+/* Si usas un tokens.css propio, mantenlo, pero este archivo ya define tokens globales coherentes */
 @import '../app/styles/tokens.css';
 
-/* ---- Base ---- */
+/* ===============================
+   TOKENS DE TEMA (LIGHT por defecto)
+   =============================== */
+:root {
+  /* Colores en formato "R G B" para usarlos con rgb(var(--...)) */
+  --bg: 248 250 252;
+  /* #F8FAFC */
+  --text: 15 23 42;
+  /* #0F172A */
+  --muted: 71 85 105;
+  /* slate-600 */
+
+  --surface: 255 255 255;
+  /* #FFFFFF */
+  --border: 226 232 240;
+  /* slate-200 */
+
+  /* Acentos / gradiente marca */
+  --accent: 59 130 246;
+  /* blue-500 */
+  --grad-1: 59 130 246;
+  /* blue-500 */
+  --grad-2: 168 85 247;
+  /* purple-500 */
+
+  /* Compat con tu logo/grad-main “learn-ish” */
+  --accent-1: 21 210 132;
+  /* verde */
+  --accent-2: 89 192 245;
+  /* azul claro */
+  --accent-3: 168 130 255;
+  /* lila */
+
+  /* Efectos y radios */
+  --shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+  --panel-alpha: 0.04;
+  /* opacidad panel translúcido */
+  --border-alpha: 0.10;
+  /* opacidad borde translúcido */
+  --radius: 16px;
+}
+
+/* DARK si el SO lo pide */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: 16 18 22;
+    /* #101216 */
+    --text: 241 245 249;
+    /* slate-100 */
+    --muted: 148 163 184;
+    /* slate-400 */
+
+    --surface: 19 23 32;
+    /* pizarra oscura */
+    --border: 45 55 72;
+    /* slate-700 */
+
+    --accent: 99 102 241;
+    /* indigo-500 */
+    --grad-1: 99 102 241;
+    /* indigo-500 */
+    --grad-2: 236 72 153;
+    /* pink-500 */
+
+    --shadow: 0 12px 36px rgba(2, 6, 23, 0.35);
+    --panel-alpha: 0.06;
+    --border-alpha: 0.16;
+  }
+}
+
+/* Forzado manual por <html data-theme="light|dark"> */
+html[data-theme="light"] {
+  --bg: 248 250 252;
+  --text: 15 23 42;
+  --muted: 71 85 105;
+  --surface: 255 255 255;
+  --border: 226 232 240;
+  --accent: 59 130 246;
+  --grad-1: 59 130 246;
+  --grad-2: 168 85 247;
+  --shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+  --panel-alpha: 0.04;
+  --border-alpha: 0.10;
+}
+
+html[data-theme="dark"] {
+  --bg: 16 18 22;
+  --text: 241 245 249;
+  --muted: 148 163 184;
+  --surface: 19 23 32;
+  --border: 45 55 72;
+  --accent: 99 102 241;
+  --grad-1: 99 102 241;
+  --grad-2: 236 72 153;
+  --shadow: 0 12px 36px rgba(2, 6, 23, 0.35);
+  --panel-alpha: 0.06;
+  --border-alpha: 0.16;
+}
+
+/* ===============================
+   RESETS + BASE
+   =============================== */
 html {
   scroll-behavior: smooth;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: rgb(var(--bg));
-  color: rgb(var(--fg));
-  margin: 0;
+  color: rgb(var(--text));
 }
 
-/* ---- Utilidades propias (sin @apply) ---- */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Focus visible accesible */
+:focus-visible {
+  outline: 3px solid rgba(var(--accent), 0.6);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ===============================
+   LAYOUT
+   =============================== */
 .container-base {
   max-width: 72rem;
-  /* ~ 1152px */
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .section {
-  padding-top: 4rem;
-  /* 64px */
-  padding-bottom: 6rem;
-  /* 96px */
+  padding: 4rem 0 6rem;
 }
 
+/* 64 / 96px */
+.display {
+  letter-spacing: -0.015em;
+}
+
+/* ===============================
+   UTILIDADES / COMPONENTES
+   =============================== */
 .card {
   background: color-mix(in oklab, rgb(var(--bg)) 70%, rgb(255 255 255) 30%);
+  border: 1px solid rgba(var(--text), var(--border-alpha));
   border-radius: 1rem;
   padding: 1.5rem;
-  border: 1px solid;
-  border-color: rgb(var(--card-border));
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow);
+}
+
+.card-3d {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  will-change: transform;
+  background: rgba(var(--bg), var(--panel-alpha));
+  border: 1px solid rgba(var(--text), var(--border-alpha));
+  border-radius: 1rem;
+  backdrop-filter: saturate(120%) blur(6px);
+  -webkit-backdrop-filter: saturate(120%) blur(6px);
+}
+
+/* Borde degradado reactivo */
+.card-3d::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 1rem;
+  padding: 1px;
+  background: linear-gradient(var(--deg, 135deg), rgba(21, 210, 132, 0.55), rgba(168, 130, 255, 0.55));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.card-3d:hover {
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.35);
 }
 
 .kbd {
   display: inline-flex;
   align-items: center;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(var(--text), 0.16);
   padding: 2px 6px;
   border-radius: 6px;
   font-size: 12px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* ---- Fondo radial + grid sutil ---- */
+.cta-glow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  background: linear-gradient(90deg, rgb(var(--grad-1)), rgb(var(--grad-2)));
+  color: #0b0d11;
+  text-decoration: none;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition: box-shadow .2s ease;
+}
+
+.cta-glow:hover {
+  box-shadow: 0 8px 40px rgba(21, 210, 132, 0.35);
+}
+
+.grad-main {
+  background-image: linear-gradient(90deg, rgb(var(--accent-1)) 0%, rgb(var(--accent-2)) 45%, rgb(var(--accent-3)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Fondo radial + grid sutil */
 .bg-radial {
   position: relative;
   isolation: isolate;
@@ -70,106 +260,6 @@ body {
   z-index: -1;
 }
 
-
-/* Accesibilidad motion */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-/* Tipografías */
-:root {
-  --font-inter: ui-sans-serif, system-ui;
-  --font-sora: ui-sans-serif, system-ui;
-  /* Fondo y texto (dark suave) */
-    --bg: 16 18 22;
-    /* #101216 aprox */
-    --fg: 232 234 237;
-    /* texto claro */
-    --muted: 150 156 166;
-  
-    /* Marca (gradiente learn-ish) */
-    --accent-1: 21 210 132;
-    /* verde */
-    --accent-2: 89 192 245;
-    /* azul claro */
-    --accent-3: 168 130 255;
-    /* lila */
-  
-    /* Botón glow */
-    --glow: 21 210 132;
-    /* mismo verde para el halo */
-    --glow-alpha: 0.35;
-  
-    /* Cards/bordes */
-    --card: 255 255 255 / 0.04;
-    --card-border: 255 255 255 / 0.08;
-  
-    /* Sombras */
-    --shadow-soft: 0 15px 40px rgba(0, 0, 0, 0.25);
-}
-
-body {
-  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial;
-  background: rgb(var(--bg));
-    color: rgb(var(--fg));
-}
-
-.display {
-  font-family: var(--font-sora), var(--font-inter), ui-sans-serif, system-ui;
-  letter-spacing: -0.015em;
-}
-
-/* ---- Accesibilidad ---- */
-.skip-link {
-  position: absolute;
-  top: -100px;
-  left: 8px;
-  background: #000;
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 10px;
-  text-decoration: none;
-  z-index: 1000;
-  transition: top .15s ease;
-}
-
-.skip-link:focus {
-  top: 8px;
-}
-
-:focus-visible {
-  outline: 3px solid rgba(124, 58, 237, 0.6);
-  /* violeta marca */
-  outline-offset: 2px;
-  border-radius: 8px;
-}
-
-/* Oculto accesible */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.grad-main {
-  background-image: linear-gradient(90deg,
-      rgb(var(--accent-1)) 0%,
-      rgb(var(--accent-2)) 45%,
-      rgb(var(--accent-3)) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
 .bg-grid {
   --gcolor: rgba(255, 255, 255, 0.04);
   --gsize: 28px;
@@ -179,76 +269,7 @@ body {
   background-size: var(--gsize) var(--gsize);
 }
 
-/* --- Utils estilo learnvue --- */
-
-/* Títulos grandes con display ya lo gestionas con .display (Sora) */
-.h1-hero {
-  font-size: 52px;
-  line-height: 1.05;
-  font-weight: 800;
-  margin: 16px 0 8px;
-}
-
-.subtitle {
-  color: rgba(232, 234, 237, 0.8);
-  max-width: 560px;
-  font-size: 18px;
-  margin: 0;
-}
-
-.page-section {
-  padding: 6rem 0 5rem;
-  /* igual que el hero */
-  position: relative;
-  overflow: hidden;
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.badge-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgb(var(--accent-1));
-  box-shadow: 0 0 8px rgba(21, 210, 132, 0.7);
-}
-
-/* CTA gradiente con glow */
-.cta-glow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 18px;
-  border-radius: 12px;
-  font-weight: 600;
-  background: linear-gradient(90deg, rgb(var(--accent-1)), rgb(var(--accent-3)));
-  color: #0b0d11;
-  text-decoration: none;
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  transition: box-shadow .2s ease;
-}
-
-.cta-glow:hover {
-  box-shadow: 0 8px 40px rgba(21, 210, 132, 0.35);
-}
-
-/* contenedor 2 columnas para headers de página (opcional) */
-.page-hero-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 32px;
-}
-
-/* Subrayado/realce muy sutil en los links del nav (desktop) */
+/* Nav underline sutil (desktop) */
 .nav-link {
   position: relative;
 }
@@ -260,7 +281,7 @@ body {
   right: 0;
   bottom: -6px;
   height: 2px;
-  background: linear-gradient(90deg, rgb(var(--accent-1)), rgb(var(--accent-3)));
+  background: linear-gradient(90deg, rgb(var(--grad-1)), rgb(var(--grad-2)));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform .18s ease;
@@ -271,7 +292,26 @@ body {
   transform: scaleX(1);
 }
 
-/* Helpers responsive sin Tailwind */
+/* Skip link accesible */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 8px;
+  z-index: 1000;
+  background: rgb(var(--surface));
+  color: rgb(var(--text));
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgb(var(--border));
+  text-decoration: none;
+  transition: top .15s ease;
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
+/* Helpers responsive */
 .only-mobile {
   display: inline-flex;
 }
@@ -289,56 +329,26 @@ body {
     display: flex !important;
   }
 }
-/* ---- Profundidad y bordes reactivos ---- */
-.card-3d {
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-  will-change: transform;
+
+/* Motion y animaciones utilitarias */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
-.card-3d::before {
-  /* borde degradado que reacciona a la interacción */
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: 1rem;
-  padding: 1px;
-  background: linear-gradient(var(--deg, 135deg),
-      rgba(21, 210, 132, 0.55),
-      rgba(168, 130, 255, 0.55));
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-.card-3d:hover {
-  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.35);
-}
-
-/* Parallax hover (activable por clase) */
-.parallax {
-  perspective: 900px;
-}
-
-/* --- Ilustración hero (scribble) --- */
 @keyframes float-soft {
   0% {
-    transform: translateY(0px);
+    transform: translateY(0)
   }
 
   50% {
-    transform: translateY(-6px);
+    transform: translateY(-6px)
   }
 
   100% {
-    transform: translateY(0px);
+    transform: translateY(0)
   }
 }
 
@@ -346,8 +356,33 @@ body {
   animation: float-soft 6s ease-in-out infinite;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .motion-safe-float {
-    animation: none !important;
+.fade-in {
+  animation: fadeIn .4s ease both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(.98)
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1)
   }
 }
+
+@keyframes pulse {
+  0% {
+    opacity: .6
+  }
+
+  50% {
+    opacity: 1
+  }
+
+  100% {
+    opacity: .6
+  }
+}
+

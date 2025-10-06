@@ -89,15 +89,13 @@ export default function Hero() {
         </div>
 
         {/* Columna derecha: placeholder visual (igual que antes) */}
-       <motion.div
-  initial={{ opacity: 0, scale: 0.98 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{ duration: 0.6, delay: 0.05 }}
-  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
->
-  <HeroIllustration />
-</motion.div>
-
+        <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.05 }}
+          >
+          <HeroIllustration />
+          </motion.div>
       </div>
 
       {/* Iconos fantasma (igual que antes) */}

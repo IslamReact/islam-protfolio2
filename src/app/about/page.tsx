@@ -1,168 +1,95 @@
+// src/app/about/page.tsx
 import Header from '@/app/components/layout/header';
 import Footer from '@/app/components/layout/footer';
-import Container from '@/app/components/layout/container';
-import PageHero from '@/app/components/features/common/PageHero';
-import Link from 'next/link';
+import { getAbout } from '@/lib/about';
+import AboutHero from '@/app/components/neo/about/AboutHero';
+import SkillsPulse from '@/app/components/neo/about/SkillsPulse';
+import AboutFactsCompact from '@/app/components/neo/about/AboutFactsCompact';
+import AboutBioCompact from '@/app/components/neo/about/AboutBioCompact';
+import HighlightsGrid from '@/app/components/neo/about/HightlightsGrid';
 
 export const metadata = {
-  title: 'Sobre mí',
-  description:
-    'Trayectoria y enfoque: automatización, datos e IA aplicada. Construyo productos rápidos, medibles y listos para negocio.',
-  alternates: { canonical: '/about' },
-  openGraph: {
-    title: 'Sobre mí · Islam El Mrabet',
-    description:
-      'Automatización, datos e IA aplicada. Enfoque en impacto, DX y rendimiento.',
-    images: [{ url: '/og-default.png', width: 1200, height: 630 }]
-  }
+  title: 'Sobre mí · Islam El Mrabet',
+  description: 'Quién soy, cómo trabajo y en qué creo.'
 };
 
-export default function AboutPage() {
-  const signals = [
-    'Optimización de herramientas internas (−42% tiempo de carga).',
-    'Migraciones masivas SINA (ORMA_*, VITA_*) con validación y auditoría.',
-    'Stack: React/Next, FastAPI, SQL Server/PostgreSQL, ETL.',
-    'Arquitectura pragmática: DX, performance y métricas primero.',
-    'Actualmente: IA aplicada y automatización de procesos.'
-  ];
+export default async function AboutPage() {
+  const about = await getAbout();
 
   return (
     <>
       <Header />
       <main id="main-content">
-        <PageHero
-          badgeText="Sobre mí"
-          title={'Soy Islam, desarrollador <span class="grad-main">full-stack</span> orientado a automatización y datos.'}
-          subtitle="Construyo productos rápidos, medibles y listos para negocio. React/Next · FastAPI · SQL Server/PostgreSQL · ETL e IA aplicada."
-          ctaHref="/#proyectos"
-          ctaLabel="Ver proyectos ›"
-        />
-
-        {/* Señales de credibilidad */}
-        <section className="section" style={{ paddingTop: 0 }}>
-          <Container>
-            <h2
-              className="display"
-              style={{ fontSize: '1.75rem', fontWeight: 700, lineHeight: 1.2, marginBottom: '1rem' }}
-            >
-              Señales de impacto
-            </h2>
-
-            <div
-              style={{
-                display: 'grid',
-                gap: '1rem',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))'
-              }}
-            >
-              {signals.map((t) => (
-                <div
-                  key={t}
-                  className="card-3d"
-                  style={{
-                    padding: '1rem',
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    borderRadius: '1rem'
-                  }}
-                >
-                  <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: 1.6 }}>{t}</p>
-                </div>
-              ))}
-            </div>
-          </Container>
+        {/* HERO */}
+        <section style={{ padding: '28px 0 18px' }}>
+          <div className="container-base">
+            <AboutHero about={about} />
+          </div>
         </section>
 
-        {/* Timeline breve */}
-        <section className="section" style={{ paddingTop: '1.5rem' }}>
-          <Container>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.75rem' }}>Timeline</h2>
-
-            {/* Dos columnas: año a la izquierda, detalle a la derecha */}
-            <div style={{ display: 'grid', gap: '0.75rem' }}>
-              <div
-                className="card"
-                style={{
-                  padding: '0.9rem 1rem',
-                  background: 'rgba(255,255,255,0.02)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  borderRadius: '0.75rem'
-                }}
-              >
-                <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '0.75rem' }}>
-                  <strong>2025</strong>
-                  <p style={{ margin: 0 }}>
-                    Excel→SQL, FocusTogether, migraciones SINA; profundizando en IA aplicada.
-                  </p>
-                </div>
-              </div>
-
-              <div
-                className="card"
-                style={{
-                  padding: '0.9rem 1rem',
-                  background: 'rgba(255,255,255,0.02)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  borderRadius: '0.75rem'
-                }}
-              >
-                <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '0.75rem' }}>
-                  <strong>2024</strong>
-                  <p style={{ margin: 0 }}>
-                    Automatización y ETL en entornos internos; foco en rendimiento front y DX.
-                  </p>
-                </div>
-              </div>
-
-              <div
-                className="card"
-                style={{
-                  padding: '0.9rem 1rem',
-                  background: 'rgba(255,255,255,0.02)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  borderRadius: '0.75rem'
-                }}
-              >
-                <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '0.75rem' }}>
-                  <strong>Antes</strong>
-                  <p style={{ margin: 0 }}>
-                    Base sólida en React, APIs con Python (FastAPI) y SQL. Empuje en datos e
-                    integraciones.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Container>
+        {/* FACTS + BIO */}
+        <section aria-label="Bio" style={{ padding: '10px 0 26px' }}>
+          <div className="container-base about-two-col">
+            <AboutFactsCompact facts={about.facts || {}} />
+            <AboutBioCompact bio={about.bio || []} />
+          </div>
         </section>
 
-        {/* CTA secundaria */}
-        <section className="section" style={{ paddingTop: 0 }}>
-          <Container>
-            <div
-              className="card-3d"
-              style={{
-                padding: '1.25rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '1rem',
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: '1rem'
-              }}
-            >
+        {/* SKILLS */}
+        <section aria-label="Skills" style={{ padding: '6px 0 26px' }}>
+          <div className="container-base">
+            <SkillsPulse core={about.skills?.core ?? []} tools={about.skills?.tools ?? []} />
+          </div>
+        </section>
+
+        {/* VALUES + HIGHLIGHTS */}
+        <section aria-label="Valores y logros" style={{ padding: '6px 0 40px' }}>
+          <div className="container-base about-two-col">
+            {/* Valores */}
+            <div className="neon-card" style={{ padding: 14 }}>
+              <h2 style={{ fontWeight: 800, fontSize: 18, marginBottom: 10 }}>Valores</h2>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {(about.values || []).map((v) => (
+                  <span key={v} className="btn-ghost" style={{ padding: '8px 12px', borderRadius: 999 }}>
+                    {v}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Highlights compactos */}
+            <HighlightsGrid highlights={about.highlights || []} />
+          </div>
+        </section>
+
+        {/* CTA final */}
+        <section style={{ padding: '0 0 56px' }}>
+          <div className="container-base">
+            <div className="neon-card" style={{ padding: 16, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
               <div>
-                <h3 style={{ margin: 0, fontWeight: 700 }}>¿Te encaja mi perfil?</h3>
-                <p style={{ margin: '0.25rem 0 0', opacity: 0.85 }}>
-                  Hablemos sobre cómo automatizar y medir impacto en tus procesos clave.
-                </p>
-                <Link href="/#contacto" className="cta-glow">Contactar ›</Link>
+                <div style={{ textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: 12, color: 'rgba(6,182,212,.85)' }}>
+                  Ready to build?
+                </div>
+                <h3 style={{ fontWeight: 800, fontSize: 20 }}>Ve mis <span className="grad-main">proyectos</span> o cuéntame tu idea</h3>
+              </div>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <a href="/projects" className="btn-primary">Ver proyectos</a>
               </div>
             </div>
-          </Container>
+          </div>
         </section>
       </main>
       <Footer />
+
+      {/* Responsive limpio (sin selectores raros) */}
+      <style>{`
+        .about-two-col{
+          display:grid; gap:14px; grid-template-columns:1.1fr .9fr;
+        }
+        @media (max-width:1100px){
+          .about-two-col{ grid-template-columns:1fr; }
+        }
+      `}</style>
     </>
   );
 }

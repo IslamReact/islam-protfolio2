@@ -1,0 +1,16 @@
+{
+  "slug": "automation-apis",
+  "title": "Automation APIs",
+  "summary": "Microservicios (FastAPI) para mover datos entre hojas, CSV y bases con transformaciones y jobs en background.",
+  "year": 2024,
+  "stack": ["FastAPI", "Pipelines", "Jobs"],
+  "category": "Backend",
+  "links": { "demo": "/videos", "code": "#" },
+  "cover": "/projects/automation-apis/cover.webp",
+  "accent": ["#a855f7", "#22d3ee"],
+  "metrics": [
+    { "label": "TPS", "value": "3k" },
+    { "label": "SLA", "value": "99.9%" },
+    { "label": "Pipelines", "value": "9" }
+  ]
+}

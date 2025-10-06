@@ -1,0 +1,25 @@
+{
+  "name": "Islam El Mrabet",
+  "title": "Full-Stack · Data · Automations",
+  "tagline": "Diseño soluciones que conectan UI, datos y negocio con foco en impacto.",
+  "avatar": "/about/avatar.jpeg",
+  "facts": {
+    "Ubicación": "Valencia, ES",
+    "Idiomas": "Español · Inglés · Árabe · Catalán",
+    "Enfoque": "Datos/SQL · Integraciones · Java"
+  },
+  "bio": [
+    "Soy ingeniero que disfruta donde se cruzan producto, datos y experiencia de usuario.",
+    "Me mueven los sistemas robustos y el detalle visual, con automatizaciones que ahorran horas reales."
+  ],
+  "skills": {
+    "core": ["Next.js", "React", "TypeScript", "Tailwind", "FastAPI", "PostgreSQL", "SQL Server", "ETL", "Java"],
+    "tools": ["Docker", "GitHub Actions", "Vercel", "Prisma", "Microsoft Server SQL", "Figma", "Notion", "Mirth"]
+  },
+  "values": ["Claridad", "Velocidad con calidad", "Accesibilidad", "Impacto medible", "Aprendizaje continuo"],
+  "highlights": [
+    { "label": "Excel → SQL", "detail": "multi-dialecto + validaciones", "year": "2024" },
+    { "label": "SINA automations", "detail": "jobs diarios + control duplicados", "year": "2025" },
+    { "label": "FocusTogether", "detail": "rooms + pomodoro + métricas", "year": "2024" }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "slug": "cookconnect",
+  "title": "CookConnect POS",
+  "summary": "Android POS para restauración: mesas, tickets e impresión rápida, offline-first.",
+  "year": 2023,
+  "stack": ["Android", "Kotlin", "SQLite"],
+  "category": "Mobile",
+  "links": { "demo": "/videos", "code": "#" },
+  "cover": "/projects/cookconnect/cover.webp",
+  "accent": ["#06b6d4", "#14b8a6"],
+  "metrics": [
+    { "label": "Tickets", "value": "ms" },
+    { "label": "Locales", "value": "12" },
+    { "label": "Soporte", "value": "24/7" }
+  ]
+}

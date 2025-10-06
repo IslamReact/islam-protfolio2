@@ -1,0 +1,103 @@
+
+.wrap {
+    padding: 16px;
+    position: relative;
+    background-image:
+        radial-gradient(900px 280px at 0% -20%, rgba(124, 58, 237, .18), transparent),
+        radial-gradient(900px 280px at 100% -20%, rgba(6, 182, 212, .18), transparent);
+    background-blend-mode: screen;
+    border-radius: 16px;
+}
+
+.hero {
+    margin-bottom: 14px;
+}
+
+.overline {
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    font-size: 12px;
+    color: rgba(6, 182, 212, .85);
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -.2px;
+}
+
+.sub {
+    color: rgba(var(--text), .82);
+    margin-top: 6px;
+}
+
+.command {
+    display: grid;
+    gap: 10px;
+    margin: 12px 0 16px;
+}
+
+.input {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid rgba(var(--text), .14);
+    background: rgba(255, 255, 255, .03);
+    color: inherit;
+    padding: 12px 14px;
+    outline: none;
+}
+
+.filters {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.chips,
+.usage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.groups {
+    display: grid;
+    gap: 16px;
+}
+
+.groupHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.groupHead h2 {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.count {
+    font-size: 12px;
+    color: rgba(var(--text), .6);
+}
+
+.grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1100px) {
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
