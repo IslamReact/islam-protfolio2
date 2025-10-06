@@ -1,5 +1,4 @@
 import site from '@/app/config/site';
-import { getAllProjects } from '../lib/projects';
 
 export default async function sitemap() {
   const base = site.url.replace(/\/$/, '');
