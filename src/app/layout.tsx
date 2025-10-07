@@ -5,6 +5,8 @@ import site from '@/app/config/site';
 import SeoJsonLd from '@/app/components/seo/SeoJsonLd';
 import ThemeProvider from '@/app/components/theme/ThemeProvider';
 import { ReactNode } from 'react';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const sora = Sora({ subsets: ['latin'], variable: '--font-sora' });
@@ -87,6 +89,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </>
           )}
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
