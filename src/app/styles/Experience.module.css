@@ -1,0 +1,272 @@
+/* ===== Contenedor ===== */
+.wrap {
+    display: grid;
+    gap: 14px;
+    position: relative;
+}
+
+/* Cabecera */
+.head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.overline {
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    font-size: 12px;
+    color: rgba(6, 182, 212, .85);
+    margin-bottom: 4px;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -.2px;
+}
+
+.sub {
+    color: rgba(var(--text), .8);
+    margin-top: 4px;
+}
+
+/* ===== Lista horizontal + línea timeline integrada ===== */
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+    position: relative;
+    /* para el ::before */
+}
+
+/* Línea vertical luminosa (izquierda) */
+.list::before {
+    content: "";
+    position: absolute;
+    left: 9px;
+    /* céntralo con el nodo (ver .node width) */
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 3px;
+    /* Fallback sólido + degradado */
+    background:
+        linear-gradient(180deg, rgba(124, 58, 237, .95), rgba(6, 182, 212, .95));
+    /* Brillo animado (glint) */
+    overflow: hidden;
+}
+
+.list::after {
+    /* Glint animado que recorre la línea */
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: -30px;
+    width: 7px;
+    height: 160px;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .8), transparent);
+    filter: blur(4px);
+    animation: rail-glint 3s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes rail-glint {
+    0% {
+        transform: translateY(0);
+        opacity: .65;
+    }
+
+    70% {
+        transform: translateY(100%);
+        opacity: .35;
+    }
+
+    100% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+/* Fila: nodo + contenido estirado */
+.row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 22px 10px 1fr;
+    /* 22 para nodo, 10 de aire, resto contenido */
+    align-items: start;
+    z-index: 1;
+    /* por encima de la línea */
+}
+
+/* Nodo alineado a la línea */
+.node {
+    grid-column: 1 / 2;
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    margin-top: 14px;
+    background: linear-gradient(135deg, var(--a, #7c3aed), var(--b, #06b6d4));
+    border: 1px solid rgba(255, 255, 255, .24);
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, .06),
+        0 0 14px rgba(124, 58, 237, .45);
+    justify-self: center;
+}
+
+/* Tarjeta estirada */
+.card {
+    grid-column: 3 / 4;
+    position: relative;
+    border-radius: 14px;
+    padding: 12px;
+    background: rgba(255, 255, 255, .03);
+    border: 1px solid rgba(var(--text), .10);
+    overflow: hidden;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .22);
+    border-color: rgba(var(--text), .14);
+}
+
+/* Glow por item */
+.glow {
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+    background:
+        linear-gradient(140deg, var(--a, #7c3aed), transparent 40%),
+        linear-gradient(-140deg, var(--b, #06b6d4), transparent 40%);
+    opacity: .18;
+    filter: blur(14px);
+}
+
+/* Header horizontal dentro de la card */
+.top {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 6px;
+}
+
+.roleLine {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.role {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -.2px;
+}
+
+.at {
+    color: rgba(var(--text), .7);
+}
+
+.company a {
+    text-decoration: none;
+    background: linear-gradient(90deg, var(--a, #7c3aed), var(--b, #06b6d4));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 900;
+}
+
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: rgba(var(--text), .68);
+}
+
+.sep {
+    opacity: .6
+}
+
+.summary {
+    position: relative;
+    z-index: 1;
+    color: rgba(var(--text), .88);
+    line-height: 1.6;
+    margin-top: 6px;
+}
+
+/* Bullet points */
+.points {
+    position: relative;
+    z-index: 1;
+    list-style: none;
+    margin: 8px 0 0 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+}
+
+.bullet {
+    color: color-mix(in srgb, var(--a, #7c3aed) 85%, white);
+    margin-right: 6px;
+}
+
+/* Tags stack */
+.tags {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.tag {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(var(--text), .12);
+    background: rgba(255, 255, 255, .02);
+    color: rgba(var(--text), .95);
+}
+
+/* CTAs */
+.ctas {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+    .list::before {
+        left: 5px;
+    }
+
+    .row {
+        grid-template-columns: 20px 8px 1fr;
+    }
+
+    .node {
+        width: 12px;
+        height: 12px;
+        margin-top: 12px;
+    }
+
+    .role {
+        font-size: 17px;
+    }
+}

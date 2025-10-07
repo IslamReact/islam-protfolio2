@@ -1,0 +1,26 @@
+{
+  "items": [
+    {
+      "company": "Lãberit",
+      "role": "HIS Project Consultant",
+      "start": "2024-03",
+      "end": null,
+      "location": "Valencia, España",
+      "mode": "Presencial",
+      "summary": "Implementation Specialist para HIS Hospitalario: configuración, integración y optimización de flujos de datos clínicos.",
+      "stack": ["SQL Server", "PostgreSQL", "HL7", "Mirth Connect", "PACS", "Integraciones"],
+      "highlights": [
+        "Mapeos y migraciones entre ORMA_* / VITA_* y sistemas externos",
+        "Desarrollo de queries, validaciones e índices para rendimiento",
+        "Interfaces HL7 en Mirth Connect: ADT/ORM/ORU",
+        "Integración con PACS y catálogos externos",
+        "Toma de requisitos con hospitales y puesta en producción"
+      ],
+      "links": {
+        "company": "https://www.laberit.com",
+        "project": "/projects/data-migration-suite"
+      },
+      "accent": ["#7c3aed", "#06b6d4"]
+    }
+  ]
+}

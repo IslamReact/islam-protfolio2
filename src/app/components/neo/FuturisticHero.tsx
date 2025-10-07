@@ -23,7 +23,7 @@ export default function FuturisticHero() {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center' }}>
               <Badge>Frontend • Backend</Badge>
               <Badge>SQL • FastAPI</Badge>
-              <Badge>Sanidad · SINA</Badge>
+              <Badge>Sanidad · HIS Hospitalario</Badge>
             </div>
 
             <h1 style={{ fontSize: 46, lineHeight: 1.05, fontWeight: 900, letterSpacing: -0.4 }}>

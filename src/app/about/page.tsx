@@ -1,14 +1,14 @@
-// src/app/about/page.tsx
 import Header from '@/app/components/layout/header';
 import Footer from '@/app/components/layout/footer';
 import { getAbout } from '@/lib/about';
+import { getExperience } from '@/././lib/experiencie';
 import AboutHero from '@/app/components/neo/about/AboutHero';
 import SkillsPulse from '@/app/components/neo/about/SkillsPulse';
 import AboutFactsCompact from '@/app/components/neo/about/AboutFactsCompact';
 import AboutBioCompact from '@/app/components/neo/about/AboutBioCompact';
 import HighlightsGrid from '@/app/components/neo/about/HightlightsGrid';
 import TimelineIA from '@/app/components/neo/TimelineIA';
-
+import ExperienceTeaser from '@/app/components/neo/experience/ExperienceTeaser';
 
 export const metadata = {
   title: 'Sobre mí · Islam El Mrabet',
@@ -17,6 +17,7 @@ export const metadata = {
 
 export default async function AboutPage() {
   const about = await getAbout();
+  const { items: xp } = await getExperience();
 
   return (
     <>
@@ -41,6 +42,13 @@ export default async function AboutPage() {
         <section aria-label="Skills" style={{ padding: '6px 0 26px' }}>
           <div className="container-base">
             <SkillsPulse core={about.skills?.core ?? []} tools={about.skills?.tools ?? []} />
+          </div>
+        </section>
+
+        {/* EXPERIENCIA (teaser dentro de Sobre mí) */}
+        <section aria-label="Experiencia" style={{ padding: '6px 0 26px' }}>
+          <div className="container-base">
+            <ExperienceTeaser items={xp} limit={3} />
           </div>
         </section>
 

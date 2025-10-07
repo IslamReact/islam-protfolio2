@@ -42,7 +42,7 @@ export default function TimelineIA() {
         Evolución del sistema
       </div>
       <h2 style={{ fontWeight: 700, fontSize: 20, marginBottom: 8 }}>
-        Roadmap personal (como una IA)
+        Roadmap personal
       </h2>
 
       <ol className="timeline-ia" style={{ position: 'relative', paddingLeft: 14 }}>

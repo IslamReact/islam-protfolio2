@@ -7,11 +7,11 @@ const NODES = [
   { id: 'React', weight: 1.0 },
   { id: 'FastAPI', weight: 0.9 },
   { id: 'SQL', weight: 1.1 },
-  { id: 'SINA', weight: 0.9 },
+  { id: 'HIS Hospitalario', weight: 0.9 },
   { id: 'Automations', weight: 1.0 },
   { id: 'Design', weight: 0.8 },
   { id: 'Next.js', weight: 0.9 },
-  { id: 'Tailwind', weight: 0.8 },
+  { id: 'Java', weight: 0.8 },
   { id: 'PostgreSQL', weight: 0.85 },
   { id: 'SQL Server', weight: 0.85 },
 ];
