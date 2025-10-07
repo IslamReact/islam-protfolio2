@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { nav as NAV } from '@/app/config/nav'; 
+import { nav as NAV } from '@/app/config/nav';
 
 export default function Header() {
   const pathname = usePathname();
@@ -13,7 +13,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   // === Tema: 'light' | 'dark' | 'system'
-  const [theme, setTheme] = useState('system');
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
   const prefersDark = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -33,7 +33,9 @@ export default function Header() {
   useEffect(() => {
     const saved = localStorage.getItem('theme');
     const initial =
-      saved === 'light' || saved === 'dark' || saved === 'system' ? (saved as 'light' | 'dark' | 'system') : 'system';
+      saved === 'light' || saved === 'dark' || saved === 'system'
+        ? (saved as 'light' | 'dark' | 'system')
+        : 'system';
     setTheme(initial);
     requestAnimationFrame(() => applyTheme(initial));
 
@@ -50,21 +52,18 @@ export default function Header() {
     const next = e?.altKey ? 'system' : theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
     localStorage.setItem('theme', next);
-    applyTheme(next as 'light' | 'dark' | 'system');
+    applyTheme(next);
   }
 
+  // Cerrar menú en cambios de ruta o en escritorio
+  useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth >= 768) setOpen(false);
-    };
+    const onResize = () => { if (window.innerWidth >= 768) setOpen(false); };
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
+  // Sticky bg al hacer scroll
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);
     onScroll();
@@ -72,17 +71,20 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const nav = NAV;
+  // Bloquear scroll de la página cuando el panel móvil está abierto
+  useEffect(() => {
+    document.body.classList.toggle('no-scroll', open);
+    return () => document.body.classList.remove('no-scroll');
+  }, [open]);
 
-  const isActive = (href: string) => {
-    if (href.includes('#')) return false;
-    return pathname === href;
-  };
+  const nav = NAV;
+  const isActive = (href: string) => (href.includes('#') ? false : pathname === href);
 
   const headerStyle: React.CSSProperties = {
     position: 'sticky',
     top: 0,
     zIndex: 40,
+    // el color final lo fuerza el CSS cuando [data-open="true"]
     backdropFilter: 'blur(8px)',
     WebkitBackdropFilter: 'blur(8px)',
     background: scrolled ? 'rgba(var(--bg), 0.78)' : 'rgba(var(--bg), 0.62)',
@@ -93,7 +95,7 @@ export default function Header() {
   };
 
   return (
-    <header role="banner" style={headerStyle}>
+    <header role="banner" style={headerStyle} data-open={open}>
       <div
         className="container-base"
         style={{
@@ -104,15 +106,14 @@ export default function Header() {
           gap: 12,
         }}
       >
+        {/* Logo */}
         <div style={{ justifySelf: 'start' }}>
           <Link href="/" aria-label="Inicio" style={{ textDecoration: 'none', color: 'inherit', fontWeight: 700 }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
               <span
                 aria-hidden
                 style={{
-                  width: 12,
-                  height: 12,
-                  borderRadius: 3,
+                  width: 12, height: 12, borderRadius: 3,
                   background: 'linear-gradient(135deg, rgb(var(--grad-1)), rgb(var(--grad-2)))',
                   boxShadow: '0 0 12px rgba(168,130,255,0.45)',
                 }}
@@ -122,6 +123,7 @@ export default function Header() {
           </Link>
         </div>
 
+        {/* Nav desktop */}
         <nav
           aria-label="Navegación principal"
           className="only-desktop"
@@ -141,18 +143,21 @@ export default function Header() {
                 {i.label}
               </a>
             ) : (
-              <Link key={i.href} href={i.href} title={i.label} className="nav-link" aria-current={active ? 'page' : undefined} style={common}>
+              <Link
+                key={i.href}
+                href={i.href}
+                title={i.label}
+                className="nav-link"
+                aria-current={active ? 'page' : undefined}
+                style={common}
+              >
                 {i.label}
                 {active && (
                   <span
                     aria-hidden
                     style={{
-                      position: 'absolute',
-                      left: 0,
-                      right: 0,
-                      bottom: -6,
-                      height: 2,
-                      borderRadius: 2,
+                      position: 'absolute', left: 0, right: 0, bottom: -6,
+                      height: 2, borderRadius: 2,
                       background: 'linear-gradient(90deg, rgb(var(--grad-1)), rgb(var(--grad-2)))',
                     }}
                   />
@@ -162,22 +167,17 @@ export default function Header() {
           })}
         </nav>
 
+        {/* Acciones */}
         <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 10 }}>
           <button
             onClick={toggleTheme}
             aria-label="Cambiar tema (Alt = sistema)"
             title={theme === 'system' ? 'Tema: Sistema (Alt+click para mantenerlo)' : `Tema: ${theme} (Alt+click para Sistema)`}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 36,
-              height: 36,
-              borderRadius: 8,
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 36, height: 36, borderRadius: 8,
               border: '1px solid rgba(var(--text), 0.2)',
-              background: 'transparent',
-              color: 'inherit',
-              fontSize: 18,
+              background: 'transparent', color: 'inherit', fontSize: 18,
             }}
           >
             {theme === 'dark' ? '☀️' : theme === 'light' ? '🌙' : prefersDark ? '☀️' : '🌙'}
@@ -190,16 +190,10 @@ export default function Header() {
             aria-controls="mobile-menu"
             className="only-mobile"
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 36,
-              height: 36,
-              borderRadius: 8,
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 36, height: 36, borderRadius: 8,
               border: '1px solid rgba(var(--text), 0.2)',
-              background: 'transparent',
-              color: 'inherit',
-              fontSize: 18,
+              background: 'transparent', color: 'inherit', fontSize: 18,
             }}
           >
             {open ? '✕' : '☰'}
@@ -207,32 +201,36 @@ export default function Header() {
         </div>
       </div>
 
-      {open && (
-        <div
-          id="mobile-menu"
-          role="dialog"
-          aria-modal="true"
-          className="only-mobile"
-          style={{
-            borderTop: '1px solid rgba(var(--text), var(--border-alpha))',
-            background: 'rgba(var(--bg), 0.96)',
-          }}
-        >
-          <nav className="container-base" aria-label="Menú móvil" style={{ display: 'flex', flexDirection: 'column', padding: '10px 0', gap: 6 }}>
-            {nav.map((i) =>
-              i.href.includes('#') ? (
-                <a key={i.href} href={i.href} title={i.label} onClick={() => setOpen(false)} style={{ padding: '12px 0', textDecoration: 'none', color: 'rgba(var(--text), 0.92)', fontSize: 16 }}>
-                  {i.label}
-                </a>
-              ) : (
-                <Link key={i.href} href={i.href} title={i.label} onClick={() => setOpen(false)} style={{ padding: '12px 0', textDecoration: 'none', color: 'rgba(var(--text), 0.92)', fontSize: 16 }}>
-                  {i.label}
-                </Link>
-              )
-            )}
-          </nav>
-        </div>
-      )}
+      {/* Backdrop */}
+      <div
+        className="mobile-backdrop only-mobile"
+        data-open={open}
+        onClick={() => setOpen(false)}
+        aria-hidden={!open}
+      />
+
+      {/* Panel */}
+      <div
+        id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        className="mobile-panel only-mobile"
+        data-open={open}
+      >
+        <nav className="container-base" aria-label="Menú móvil" style={{ display: 'flex', flexDirection: 'column', padding: '10px 0', gap: 6 }}>
+          {NAV.map((i) =>
+            i.href.includes('#') ? (
+              <a key={i.href} href={i.href} title={i.label} onClick={() => setOpen(false)} className="mobile-link">
+                {i.label}
+              </a>
+            ) : (
+              <Link key={i.href} href={i.href} title={i.label} onClick={() => setOpen(false)} className="mobile-link">
+                {i.label}
+              </Link>
+            )
+          )}
+        </nav>
+      </div>
     </header>
   );
 }

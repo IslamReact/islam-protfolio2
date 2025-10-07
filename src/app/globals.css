@@ -386,3 +386,119 @@ button {
   }
 }
 
+/* ===== Header responsive + mobile drawer ===== */
+
+/* Base */
+.only-desktop {
+  display: flex;
+}
+
+.only-mobile {
+  display: none;
+}
+
+/* Evita scroll al abrir el panel */
+.no-scroll {
+  overflow: hidden;
+}
+
+/* Altura del header en móvil */
+:root {
+  --hdr-h: 56px;
+}
+
+@media (max-width: 380px) {
+  :root {
+    --hdr-h: 52px;
+  }
+}
+
+@media (max-width: 768px) {
+  .only-desktop {
+    display: none !important;
+  }
+
+  .only-mobile {
+    display: inline-flex !important;
+  }
+
+  /* Header compacto */
+  header[role="banner"] .container-base {
+    grid-template-columns: auto 1fr auto !important;
+    height: var(--hdr-h) !important;
+    gap: 8px !important;
+  }
+
+  /* Cuando el menú está abierto, header opaco (no transparente) */
+  header[role="banner"][data-open="true"] {
+    background: rgb(var(--bg)) !important;
+    border-bottom: 1px solid rgba(var(--text), var(--border-alpha)) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Backdrop que cubre toda la pantalla bajo el header */
+  .mobile-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 48;
+    background: rgba(0, 0, 0, .55);
+    /* más oscuro para separar bien */
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .24s ease;
+  }
+
+  .mobile-backdrop[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Panel móvil sólido */
+  .mobile-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: var(--hdr-h);
+    height: calc(100dvh - var(--hdr-h));
+    z-index: 49;
+    background: rgb(var(--bg));
+    /* 100% opaco */
+    border-top: 1px solid rgba(var(--text), var(--border-alpha));
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .24s ease, opacity .24s ease;
+    will-change: transform, opacity;
+    overflow: auto;
+    /* scroll interno del panel */
+  }
+
+  .mobile-panel[data-open="true"] {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Links del menú móvil */
+  .mobile-link {
+    display: block;
+    padding: 16px 0;
+    text-decoration: none;
+    color: rgba(var(--text), 0.96);
+    font-size: 17px;
+    border-bottom: 1px solid rgba(var(--text), .06);
+  }
+
+  .mobile-link:last-child {
+    border-bottom: 0;
+  }
+}
+
+/* Fallback por si --bg no existe aún */
+:root {
+  --bg: 10, 10, 14;
+  --text: 255, 255, 255;
+  --border-alpha: .14;
+}
