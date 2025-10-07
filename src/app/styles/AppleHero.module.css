@@ -1,0 +1,169 @@
+.wrap {
+    position: relative;
+    overflow: clip;
+    padding: clamp(32px, 5vw, 56px) 0;
+}
+
+/* blobs + glow suaves (usan tus tokens) */
+.bg {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(60% 40% at 15% 10%, rgba(var(--grad-1), .20), transparent 60%),
+        radial-gradient(45% 35% at 85% 0%, rgba(var(--grad-2), .20), transparent 60%),
+        radial-gradient(55% 40% at 50% 100%, rgba(var(--text), .06), transparent 60%);
+    filter: saturate(1.02) blur(.2px);
+    pointer-events: none;
+}
+
+.inner {
+    display: grid;
+    gap: 16px;
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+}
+
+/* overline adaptable a claro/oscuro */
+.overline {
+    text-transform: uppercase;
+    letter-spacing: .22em;
+    font-size: 12px;
+    color: rgba(var(--text), .78);
+    width: max-content;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(var(--text), .14);
+    background: rgba(var(--text), .04);
+    backdrop-filter: blur(6px);
+}
+
+/* Título grande estilo Apple */
+.title {
+    margin: 0;
+    display: grid;
+    gap: 10px;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, system-ui, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.subtle {
+    font-size: clamp(14px, 2.2vw, 18px);
+    color: rgba(var(--text), .65);
+    font-weight: 700;
+}
+
+.nameLine {
+    display: block;
+    font-size: clamp(40px, 8.5vw, 96px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+}
+
+.name {
+    color: rgb(var(--text));
+}
+
+/* grad usa tus tokens de gradiente */
+.grad {
+    background: linear-gradient(90deg, rgb(var(--grad-1)), rgb(var(--grad-2)) 60%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 6px 30px rgba(91, 211, 255, .15);
+}
+
+.claim {
+    display: block;
+    font-size: clamp(20px, 3.3vw, 36px);
+    font-weight: 800;
+    color: rgb(var(--text));
+}
+
+.claim em {
+    font-style: normal;
+    background: linear-gradient(90deg, rgb(var(--grad-1)), rgb(var(--grad-2)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* lead */
+.lead {
+    max-width: 860px;
+    color: rgba(var(--text), .82);
+    font-size: clamp(15px, 1.7vw, 18px);
+    line-height: 1.7;
+    margin-top: 6px;
+}
+
+/* CTAs */
+.ctas {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    padding: 0 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    border: 1px solid rgba(var(--text), .16);
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background-color .15s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btnPrimary {
+    color: #0b0b10;
+    background: linear-gradient(90deg, rgb(var(--grad-1)), rgb(var(--grad-2)));
+    border-color: transparent;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+}
+
+/* Botón secundario translúcido que funciona en ambos temas */
+.btnGhost {
+    color: rgb(var(--text));
+    background: rgba(var(--text), .06);
+    border-color: rgba(var(--text), .14);
+    backdrop-filter: blur(8px);
+}
+
+/* chips tech */
+.chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    justify-content: center;
+}
+
+.chip {
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(var(--text), .14);
+    background: rgba(var(--text), .04);
+    color: rgba(var(--text), .88);
+}
+
+/* Ligero ajuste de contraste en modo claro para que el translúcido no se pierda */
+html[data-theme="light"] .btnGhost {
+    background: rgba(0, 0, 0, .04);
+    border-color: rgba(0, 0, 0, .10);
+}
+
+html[data-theme="light"] .overline {
+    background: rgba(0, 0, 0, .04);
+    border-color: rgba(0, 0, 0, .10);
+    color: rgba(0, 0, 0, .66);
+}

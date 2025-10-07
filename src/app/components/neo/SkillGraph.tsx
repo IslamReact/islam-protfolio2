@@ -1,3 +1,4 @@
+// src/app/components/neo/SkillGraph.tsx
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -26,9 +27,50 @@ const LINKS: [number, number][] = [
   [6,1],
 ];
 
+/* ===== helpers color ===== */
+function parseTriplet(s: string): [number, number, number] {
+  const parts = s.trim().split(/\s+/).map(Number);
+  return parts.length >= 3
+    ? [parts[0] || 0, parts[1] || 0, parts[2] || 0]
+    : [241, 245, 249]; // fallback claro
+}
+const toRgba = (r: number, g: number, b: number, a = 1) => `rgba(${r},${g},${b},${a})`;
+const luminance = (r: number, g: number, b: number) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
 export default function SkillGraph() {
   const ref = useRef<HTMLCanvasElement | null>(null);
   const raf = useRef<number | null>(null);
+
+  // colores reactivos al tema
+  const fillColorRef   = useRef<string>(toRgba(241,245,249,0.92));
+  const strokeColorRef = useRef<string>('rgba(0,0,0,0.32)');
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    const update = () => {
+      const trip = getComputedStyle(root).getPropertyValue('--text') || '241 245 249';
+      const [r, g, b] = parseTriplet(trip);
+      fillColorRef.current = toRgba(r, g, b, 0.92);
+      const L = luminance(r, g, b);
+      // si el texto es claro -> contorno oscuro; si es oscuro -> contorno claro
+      strokeColorRef.current = L > 160 ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.40)';
+    };
+
+    update();
+
+    // observar cambios de data-theme y del modo sistema
+    const mo = new MutationObserver(update);
+    mo.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const onMql = () => update();
+    mql.addEventListener?.('change', onMql);
+
+    return () => {
+      mo.disconnect();
+      mql.removeEventListener?.('change', onMql);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = ref.current!;
@@ -55,9 +97,9 @@ export default function SkillGraph() {
 
       // Links
       ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(6,182,212,0.18)';
       for (const [a, b] of LINKS) {
         const A = nodes[a], B = nodes[b];
-        ctx.strokeStyle = 'rgba(6,182,212,0.18)';
         ctx.beginPath();
         ctx.moveTo(A.x, A.y);
         ctx.lineTo(B.x, B.y);
@@ -71,6 +113,8 @@ export default function SkillGraph() {
         if (n.y < 40 || n.y > h - 40) n.vy *= -1;
 
         const r = 6 + n.weight * 6;
+
+        // glow
         const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 2.2);
         g.addColorStop(0, 'rgba(124,58,237,0.5)');
         g.addColorStop(1, 'rgba(255,255,255,0.0)');
@@ -79,10 +123,18 @@ export default function SkillGraph() {
         ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = 'rgba(255,255,255,0.85)';
-        ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, Monaco';
+        // label
+        const labelY = n.y - (r + 8);
+        ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
         ctx.textAlign = 'center';
-        ctx.fillText(n.id, n.x, n.y - (r + 8));
+        ctx.textBaseline = 'alphabetic';
+        ctx.lineWidth = 2;
+        ctx.lineJoin = 'round';
+        ctx.miterLimit = 2;
+        ctx.strokeStyle = strokeColorRef.current;
+        ctx.strokeText(n.id, n.x, labelY);
+        ctx.fillStyle = fillColorRef.current;
+        ctx.fillText(n.id, n.x, labelY);
       }
 
       if (mounted) raf.current = requestAnimationFrame(loop);

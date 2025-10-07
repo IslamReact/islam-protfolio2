@@ -127,14 +127,14 @@ export default function Header() {
         <nav
           aria-label="Navegación principal"
           className="only-desktop"
-          style={{ justifySelf: 'center', alignItems: 'center', gap: 40, display: 'flex' }}
+          style={{ justifySelf: 'center', alignItems: 'center', gap: 25, display: 'flex' }}
         >
           {nav.map((i) => {
             const active = isActive(i.href);
             const common: React.CSSProperties = {
               textDecoration: 'none',
               color: active ? 'rgba(var(--text), 1)' : 'rgba(var(--text), 0.86)',
-              fontSize: 18,
+              fontSize: 15,
               letterSpacing: 0.2,
               position: 'relative',
             };

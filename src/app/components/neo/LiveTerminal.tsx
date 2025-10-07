@@ -1,8 +1,8 @@
-// src/app/components/neo/LiveTerminal.tsx
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import styles from '../../styles/TerminalMac.module.css';
 
 export type CommandProject = {
   slug: string;
@@ -11,9 +11,7 @@ export type CommandProject = {
 };
 
 type Props = {
-  /** Pásame tus proyectos ya cargados (slug + title). */
   projects?: CommandProject[];
-  /** Texto del placeholder en la línea de comandos. */
   placeholder?: string;
 };
 
@@ -23,24 +21,20 @@ export default function LiveTerminal({
 }: Props) {
   const router = useRouter();
 
-  /** ------- Estado de salida (logs) ------- */
   const [output, setOutput] = useState<string[]>([]);
   const bootIndex = useRef(0);
   const boxRef = useRef<HTMLDivElement | null>(null);
 
-  /** ------- Línea de comando ------- */
   const [cmd, setCmd] = useState('');
   const [history, setHistory] = useState<string[]>([]);
   const histIdx = useRef<number>(-1);
 
-  /** ------- Sugerencias (en vivo) ------- */
   const suggestions = useMemo(() => {
     const q = cmd.trim().toLowerCase();
     if (!q) return projects.slice(0, 5);
     return rank(projects, q).slice(0, 7);
   }, [projects, cmd]);
 
-  /** ------- Boot animado (como el original) ------- */
   useEffect(() => {
     const LINES = makeBootLines(projects);
     const id = setInterval(() => {
@@ -55,12 +49,10 @@ export default function LiveTerminal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /** Auto-scroll al final cuando hay nuevas líneas */
   useEffect(() => {
     boxRef.current?.scrollTo({ top: 9_999_999, behavior: 'smooth' });
   }, [output]);
 
-  /** Acceso rápido para enfocar el comando: ⌘/Ctrl + L */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'l') {
@@ -72,19 +64,15 @@ export default function LiveTerminal({
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  /** ------- Ejecución de comandos ------- */
   function run(raw: string) {
     const line = raw.trim();
     if (!line) return;
 
-    // añade a historial
     setHistory((h) => [...h, line]);
     histIdx.current = -1;
 
-    // log de entrada
     pushOut(`$ ${line}`);
 
-    // comandos
     if (line === 'help' || line === '?') {
       pushOut('help> comandos: open <slug|título>, search <texto>, ls, projects, about, uses, contact');
       return;
@@ -96,55 +84,29 @@ export default function LiveTerminal({
       return;
     }
 
-    if (line === 'projects') {
-      router.push('/projects');
-      pushOut('→ /projects');
-      return;
-    }
-    if (line === 'about') {
-      router.push('/about');
-      pushOut('→ /about');
-      return;
-    }
-    if (line === 'uses') {
-      router.push('/uses');
-      pushOut('→ /uses');
-      return;
-    }
+    if (line === 'projects') { router.push('/projects'); pushOut('→ /projects'); return; }
+    if (line === 'about')    { router.push('/about');    pushOut('→ /about');    return; }
+    if (line === 'uses')     { router.push('/uses');     pushOut('→ /uses');     return; }
     if (line === 'contact' || line === 'contacto') {
-      router.push('/#contacto');
-      pushOut('→ /#contacto');
-      return;
+      router.push('/#contacto'); pushOut('→ /#contacto'); return;
     }
 
-    // search
     if (line.startsWith('search ')) {
       const q = line.slice(7).trim();
-      if (q) {
-        router.push(`/projects?q=${encodeURIComponent(q)}`);
-        pushOut(`→ search "${q}" en /projects`);
-      }
+      if (q) { router.push(`/projects?q=${encodeURIComponent(q)}`); pushOut(`→ search "${q}" en /projects`); }
       return;
     }
 
-    // open
     if (line.startsWith('open ')) {
       const term = line.slice(5).trim().toLowerCase();
       const best = rank(projects, term)[0];
-      if (best) {
-        openProject(best);
-      } else {
-        pushOut('not found');
-      }
+      if (best) openProject(best); else pushOut('not found');
       return;
     }
 
-    // sin prefijo: intenta abrir por match; si no, busca
     const best = rank(projects, line.toLowerCase())[0];
-    if (best) {
-      openProject(best);
-      return;
-    }
+    if (best) { openProject(best); return; }
+
     router.push(`/projects?q=${encodeURIComponent(line)}`);
     pushOut(`→ search "${line}" en /projects`);
   }
@@ -158,7 +120,6 @@ export default function LiveTerminal({
     setOutput((prev) => [...prev, line]);
   }
 
-  /** ------- Gestión de teclado en input ------- */
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -186,11 +147,9 @@ export default function LiveTerminal({
       return;
     }
     if (e.key === 'Tab') {
-      // autocompletar con la mejor sugerencia
       e.preventDefault();
       const best = suggestions[0];
       if (!best) return;
-      // si el usuario empezó con "open " mantenemos eso
       const trimmed = cmd.trimStart();
       const hasOpen = /^open\s+/i.test(trimmed);
       setCmd(hasOpen ? `open ${best.slug}` : best.slug);
@@ -198,61 +157,31 @@ export default function LiveTerminal({
   }
 
   return (
-    <div className="neon-card" style={{ padding: 12 }}>
-      {/* Header ventana */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-        <span style={{ width: 8, height: 8, borderRadius: 999, background: 'rgb(244,63,94)' }} />
-        <span style={{ width: 8, height: 8, borderRadius: 999, background: 'rgb(250,204,21)' }} />
-        <span style={{ width: 8, height: 8, borderRadius: 999, background: 'rgb(34,197,94)' }} />
-        <span style={{ marginLeft: 8, fontWeight: 700 }}>Terminal · proyectos</span>
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'rgba(var(--text),.65)' }}>
-          ⌘/Ctrl + L para enfocar · Enter ejecuta
+    <div className={styles.wrap}>
+      {/* Barra superior estilo mac */}
+      <div className={styles.chrome}>
+        <span className={styles.dots} aria-hidden>
+          <span className={`${styles.dot} ${styles.dotClose}`} />
+          <span className={`${styles.dot} ${styles.dotMin}`} />
+          <span className={`${styles.dot} ${styles.dotFull}`} />
         </span>
+        <span className={styles.title}>Terminal · proyectos</span>
+        <span className={styles.hint}>⌘/Ctrl + L para enfocar · Enter ejecuta</span>
       </div>
 
       {/* Salida */}
-      <div
-        ref={boxRef}
-        style={{
-          background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(var(--text), 0.08)',
-          borderRadius: 10,
-          padding: 12,
-          height: 200,
-          overflow: 'auto',
-          fontFamily:
-            'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-          fontSize: 13,
-          color: 'rgba(255,255,255,0.92)',
-          display: 'grid',
-          alignContent: 'start',
-          gap: 4,
-        }}
-      >
+      <div ref={boxRef} className={styles.body}>
         {output.map((line, idx) => (
           <div key={idx}>
-            <span style={{ color: 'rgb(6,182,212)' }}>$</span>{' '}
+            <span style={{ color: 'rgb(var(--accent))' }}>$</span>{' '}
             <span style={{ whiteSpace: 'pre-wrap' }}>{line}</span>
           </div>
         ))}
       </div>
 
-      {/* Línea de comandos */}
-      <div
-        style={{
-          marginTop: 8,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-          border: '1px solid rgba(var(--text), 0.08)',
-          background: 'rgba(255,255,255,0.03)',
-          borderRadius: 10,
-          padding: '8px 10px',
-          fontFamily:
-            'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-        }}
-      >
-        <span style={{ color: 'rgb(6,182,212)', fontWeight: 700 }}>$</span>
+      {/* Prompt */}
+      <div className={styles.prompt}>
+        <span className={styles.dollar}>$</span>
         <input
           id="terminal-input"
           value={cmd}
@@ -263,27 +192,19 @@ export default function LiveTerminal({
           autoCorrect="off"
           spellCheck={false}
           aria-label="Línea de comandos"
-          style={{
-            flex: 1,
-            background: 'transparent',
-            border: 0,
-            outline: 'none',
-            color: 'inherit',
-            fontSize: 13,
-          }}
+          className={styles.input}
         />
       </div>
 
-      {/* Sugerencias rápidas debajo del prompt */}
+      {/* Sugerencias rápidas */}
       {suggestions.length > 0 && (
-        <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+        <div className={styles.suggestions}>
           {suggestions.map((s) => (
             <button
               key={s.slug}
               onClick={() => openProject(s)}
-              className="btn-ghost"
+              className={styles.suggestion}
               title={`Abrir ${s.title}`}
-              style={{ padding: '6px 10px', fontFamily: 'inherit', fontSize: 12 }}
             >
               <strong>{s.title}</strong>&nbsp;<code style={{ opacity: 0.8 }}>{s.slug}</code>
             </button>
@@ -303,9 +224,10 @@ function makeBootLines(projects: CommandProject[]): string[] {
     ...picks.map((p) => `ok   ${p.title}: #${p.slug}`),
     'tip  escribe: open <slug> · ls · search <texto> · help',
   ];
-  // fallback si no hay proyectos
   if (!picks.length) {
-    lines.splice(1, 0,
+    lines.splice(
+      1,
+      0,
       'ok   Excel→SQL: multi-dialecto (PG · SQL Server · MySQL)',
       'ok   FocusTogether: rooms + pomodoro + métricas',
       'ok   CookConnect POS: Android · tickets · mesas',

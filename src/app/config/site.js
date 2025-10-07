@@ -1,9 +1,9 @@
 const site = {
   name: 'Islam El Mrabet',
-  title: 'Full-stack • Automatización • Datos • IA aplicada',
+  title: 'IA aplicada',
   description:
     'Construyo herramientas que ahorran tiempo y dinero. React/Next, FastAPI, SQL Server, PostgreSQL, ETL e IA aplicada.',
-  url: 'https://tu-dominio.vercel.app',
+  url: 'https://islam-protfolio2.vercel.app',
   locale: 'es-ES',
   twitter: '@tu_usuario',
   image: '/og-default.png',

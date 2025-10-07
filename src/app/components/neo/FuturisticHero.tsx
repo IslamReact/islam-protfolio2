@@ -1,74 +1,117 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import styles from '../../styles/AppleHero.module.css';
+import { useEffect, useRef, useState } from 'react';
 
 export default function FuturisticHero() {
-  const [typed, setTyped] = useState('');
   const full = 'Islam.AI — Diseño • Datos • Automatización';
 
+  // Estado para el texto y la fase
+  const [typed, setTyped] = useState('');
+  const [i, setI] = useState(0);
+  const [phase, setPhase] = useState<'typing' | 'deleting'>('typing');
+  const tRef = useRef<number | null>(null);
+
   useEffect(() => {
-    let i = 0;
-    const id = setInterval(() => {
-      setTyped(full.slice(0, i++));
-      if (i > full.length) clearInterval(id);
-    }, 28);
-    return () => clearInterval(id);
-  }, []);
+    // limpia cualquier timeout anterior
+    if (tRef.current) window.clearTimeout(tRef.current);
+
+    // velocidades y pausas
+    const typeSpeed = 28;
+    const deleteSpeed = 18;
+    const endPause = 1200;   // pausa al terminar de escribir
+    const startPause = 600;  // pausa al vaciar y antes de volver a escribir
+
+    if (phase === 'typing') {
+      if (i < full.length) {
+        tRef.current = window.setTimeout(() => {
+          setTyped(full.slice(0, i + 1));
+          setI(i + 1);
+        }, typeSpeed);
+      } else {
+        // alcanzado el final: pausa y cambia a borrar
+        tRef.current = window.setTimeout(() => setPhase('deleting'), endPause);
+      }
+    } else {
+      // deleting
+      if (i > 0) {
+        tRef.current = window.setTimeout(() => {
+          setTyped(full.slice(0, i - 1));
+          setI(i - 1);
+        }, deleteSpeed);
+      } else {
+        // vacío: pausa y vuelve a escribir
+        tRef.current = window.setTimeout(() => setPhase('typing'), startPause);
+      }
+    }
+
+    return () => {
+      if (tRef.current) {
+        window.clearTimeout(tRef.current);
+        tRef.current = null;
+      }
+    };
+  }, [i, phase, full]);
 
   return (
-    <section style={{ padding: '56px 0 24px' }}>
+    <div className={styles.wrap}>
+      {/* fondos suaves */}
+      <div className={styles.bg} aria-hidden />
+
       <div className="container-base">
-        <div className="neon-card" style={{ padding: 24, overflow: 'hidden' }}>
-          <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center' }}>
-              <Badge>Frontend • Backend</Badge>
-              <Badge>SQL • FastAPI</Badge>
-              <Badge>Sanidad · HIS Hospitalario</Badge>
-            </div>
-
-            <h1 style={{ fontSize: 46, lineHeight: 1.05, fontWeight: 900, letterSpacing: -0.4 }}>
-              <span className="grad-main">Islam</span> El Mrabet
-            </h1>
-
-            <p style={{ color: 'rgba(var(--text), 0.86)', fontSize: 18, lineHeight: 1.55, maxWidth: 780 }}>
-              Construyo sistemas y experiencias que combinan <strong>IA</strong>, <strong>datos</strong> y <strong>diseño</strong>,
-              llevando equipos de un <em>Excel</em> a un producto <strong>rápido</strong>, <strong>usable</strong> y <strong>escalable</strong>.
-            </p>
-
-            <div style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace', color: 'rgba(var(--text), 0.9)', fontSize: 14, opacity: 0.95 }}>
-              <span style={{ color: 'rgb(124,58,237)' }}>›</span> {typed}
-              <span style={{ animation: 'blink 1s step-start infinite' }}>|</span>
-            </div>
-
-            {/* CTAs actualizados */}
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 6, justifyContent: 'center' }}>
-              <a href="/projects" className="btn-primary">Ver Proyectos</a>
-              <a href="#contacto" className="btn-ghost">Escríbeme un prompt</a>
-            </div>
+        <div className={styles.inner}>
+          {/* overline */}
+          <div className={styles.overline}>
+            Diseño · IA · Datos · Automatización
           </div>
 
-          <style>{`@keyframes blink { 50% { opacity: 0; } }`}</style>
+          {/* título grande, al estilo Apple */}
+          <h1 className={styles.title}>
+            <span className={styles.subtle}>Hola, soy</span>
+            <span className={styles.nameLine}>
+              <span className={styles.name}>Islam</span>{' '}
+              <span className={styles.grad}>El&nbsp;Mrabet</span>
+            </span>
+            <span className={styles.claim}>
+              convierto ideas en productos{' '}
+              <em>claros</em>, <em>rápidos</em> y <em>escalables</em>.
+            </span>
+          </h1>
+
+          {/* copy breve */}
+          <p className={styles.lead}>
+            Full-stack con foco en <strong>experiencia</strong> ,{' '}
+            <strong>datos</strong> e <span className={styles.grad}>IA</span>. Trabajo con Next.js, TypeScript y SQL
+            para construir interfaces cuidadas y sistemas que soportan negocio.
+          </p>
+
+          {/* línea "terminal" animada */}
+          <div
+            style={{
+              fontFamily:
+                'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+              color: 'rgba(var(--text), 0.9)',
+              fontSize: 14,
+              opacity: 0.95,
+            }}
+          >
+            <span style={{ color: 'rgb(124,58,237)' }}>›</span>{' '}
+            {typed}
+            <span style={{ animation: 'blink 1s step-start infinite' }}>|</span>
+          </div>
+
+          {/* CTAs */}
+          <div className={styles.ctas}>
+            <Link href="/projects" className={`${styles.btn} ${styles.btnPrimary}`}>
+              Ver proyectos
+            </Link>
+            <a href="#contacto" className={`${styles.btn} ${styles.btnGhost}`}>
+              Escríbeme un prompt
+            </a>
+          </div>
         </div>
       </div>
-    </section>
-  );
-}
-
-function Badge({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        borderRadius: 999,
-        border: '1px solid rgba(var(--text), 0.14)',
-        background: 'rgba(255,255,255,0.03)',
-        padding: '6px 10px',
-        fontSize: 12,
-        color: 'rgba(var(--text), 0.92)',
-      }}
-    >
-      {children}
-    </span>
+    </div>
   );
 }
