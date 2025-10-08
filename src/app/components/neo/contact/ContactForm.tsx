@@ -53,7 +53,7 @@ export default function ContactForm({ initialPrompt = '' }: { initialPrompt?: st
     if (!name.trim() || !mail.trim() || !msg.trim()) {
       setStatus('error');
       setError('Por favor, completa nombre, email y mensaje.');
-      e.currentTarget.reportValidity(); // muestra ayudas del navegador si faltan
+      e.currentTarget.reportValidity();
       return;
     }
 
@@ -80,31 +80,28 @@ export default function ContactForm({ initialPrompt = '' }: { initialPrompt?: st
       });
 
       if (res.ok) {
+        // 🔔 Enviar copia a tu API → Make (no pasa el secreto al cliente)
+        try {
+          await fetch('/api/make-intake', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name,
+              email: mail,
+              message: msg,
+              subject: 'Contacto web · islamelmrabet.dev',
+              page: typeof window !== 'undefined' ? window.location.href : '',
+              source: 'formspree',
+            }),
+          });
+        } catch {
+          // Si falla, no bloquea el éxito del usuario
+        }
+
         setStatus('success');
         setSentAt(new Date());
         setAiFull(buildAiReply(name, msg, mail));
         setAiTyping(true);
-
-        // 🔔 Envío secundario a tu API → Make (no bloquea la UI)
-        try {
-          const payload = {
-            name,
-            email: mail,
-            message: msg,
-            subject: 'Contacto web · islamelmrabet.dev',
-            page: typeof window !== 'undefined' ? window.location.href : undefined,
-            source: 'formspree' as const,
-          };
-          void fetch('/api/make-intake', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            keepalive: true,
-          });
-        } catch {
-          // no romper UX si falla el envío secundario
-        }
-
         setName('');
         setMail('');
         setMsg('');
@@ -131,10 +128,7 @@ export default function ContactForm({ initialPrompt = '' }: { initialPrompt?: st
         <p className={styles.sub}>Objetivo, alcance, plazos y cualquier ejemplo que tengas.</p>
       </div>
 
-      {status === 'success' && (
-        <div>
-        </div>
-      )}
+      {status === 'success' && <div />}
       {status === 'error' && (
         <div className={`${styles.alert} ${styles.alertError}`} role="alert">
           ❌ No se pudo enviar: {error}

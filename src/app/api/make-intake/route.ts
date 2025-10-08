@@ -1,4 +1,5 @@
-import { NextResponse, NextRequest } from 'next/server';
+// src/app/api/make-intake/route.ts
+import { NextResponse } from 'next/server';
 
 type IntakePayload = {
   name?: string;
@@ -6,77 +7,90 @@ type IntakePayload = {
   message: string;
   subject?: string;
   page?: string;
-  source?: 'formspree' | 'manual' | string;
+  source?: 'formspree' | 'web' | 'manual' | string;
 };
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST,OPTIONS',
-  'Access-Control-Allow-Headers': 'content-type,x-shared-secret',
-} as const;
-
-export async function OPTIONS() {
-  return new NextResponse(null, { status: 204, headers: corsHeaders });
+function isLikelyEmail(s: string): boolean {
+  // Validación mínima sin regex complejo: contiene @ y un punto después
+  const at = s.indexOf('@');
+  const dot = s.lastIndexOf('.');
+  return at > 0 && dot > at + 1 && dot < s.length - 1;
 }
 
-export async function POST(req: NextRequest) {
+function sameSiteOrSecretOk(req: Request): { ok: boolean; reason?: string } {
+  const expected = process.env.MAKE_SHARED_SECRET;
+  const got = req.headers.get('x-shared-secret');
+  if (expected && got && got === expected) return { ok: true, reason: 'secret' };
+
+  // Fallback: aceptar llamadas del mismo sitio (desde el frontend propio)
+  const secFetchSite = req.headers.get('sec-fetch-site'); // 'same-origin'|'same-site'|'cross-site'|null
+  if (secFetchSite && (secFetchSite === 'same-origin' || secFetchSite === 'same-site')) {
+    return { ok: true, reason: 'same-site' };
+  }
+
+  return { ok: false, reason: 'no-secret-and-not-same-site' };
+}
+
+export async function POST(req: Request) {
   try {
-    const body: IntakePayload = await req.json();
+    const body = (await req.json()) as IntakePayload;
 
     // Validación mínima
-    if (!body?.email || !body?.message) {
-      return NextResponse.json(
-        { ok: false, error: 'Missing fields: email and message are required' },
-        { status: 400, headers: corsHeaders }
-      );
+    const email = (body?.email || '').trim();
+    const message = (body?.message || '').trim();
+    if (!email || !message) {
+      return NextResponse.json({ ok: false, error: 'Missing fields: email and message' }, { status: 400 });
+    }
+    if (!isLikelyEmail(email)) {
+      return NextResponse.json({ ok: false, error: 'Invalid email' }, { status: 400 });
+    }
+    if (message.length > 5000) {
+      return NextResponse.json({ ok: false, error: 'Message too long' }, { status: 413 });
     }
 
-    // Secreto opcional (solo si lo configuras)
-    const expectedSecret = process.env.MAKE_SHARED_SECRET;
-    const gotSecret = req.headers.get('x-shared-secret') ?? '';
-    if (expectedSecret && gotSecret !== expectedSecret) {
-      return NextResponse.json(
-        { ok: false, error: 'Forbidden: bad x-shared-secret' },
-        { status: 403, headers: corsHeaders }
-      );
+    // Seguridad básica
+    const gate = sameSiteOrSecretOk(req);
+    if (!gate.ok) {
+      return NextResponse.json({ ok: false, error: 'Forbidden: bad origin or missing secret' }, { status: 403 });
     }
 
-    // URL del webhook (acepta dos nombres por comodidad)
-    const HOOK =
-      process.env.MAKE_INTAKE_WEBHOOK_URL ||
-      process.env.MAKE_WEBHOOK_URL;
-    if (!HOOK) {
-      return NextResponse.json(
-        { ok: false, error: 'Missing MAKE_INTAKE_WEBHOOK_URL or MAKE_WEBHOOK_URL' },
-        { status: 500, headers: corsHeaders }
-      );
+    const url = process.env.MAKE_INTAKE_WEBHOOK_URL;
+    if (!url) {
+      return NextResponse.json({ ok: false, error: 'Missing MAKE_INTAKE_WEBHOOK_URL' }, { status: 500 });
     }
 
-    // Metadatos útiles
-    const meta = {
-      receivedAt: new Date().toISOString(),
-      userAgent: req.headers.get('user-agent') ?? '',
-      ip: req.headers.get('x-forwarded-for') ?? '',
-      referer: req.headers.get('referer') ?? '',
-    };
-
-    // Reenvía a Make como JSON
-    const r = await fetch(HOOK, {
+    // Reenviar a Make
+    const r = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...body, ...meta }),
-      redirect: 'manual',
-      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+        // Mandamos el secreto a Make para poder filtrarlo allí también (doble capa)
+        'X-Shared-Secret': process.env.MAKE_SHARED_SECRET || ''
+      },
+      body: JSON.stringify({
+        name: (body.name || '').trim(),
+        email,
+        message,
+        subject: body.subject || 'Contacto web',
+        page: body.page || '',
+        source: body.source || 'web',
+        receivedAt: new Date().toISOString(),
+        userAgent: req.headers.get('user-agent') ?? '',
+        origin: req.headers.get('origin') ?? req.headers.get('referer') ?? ''
+      }),
+      redirect: 'manual'
     });
 
-    return NextResponse.json(
-      { ok: r.ok, status: r.status },
-      { status: 200, headers: corsHeaders }
-    );
+    if (!r.ok) {
+      const txt = await r.text().catch(() => '');
+      return NextResponse.json({ ok: false, error: `Make responded ${r.status}`, details: txt }, { status: 502 });
+    }
+
+    return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json(
       { ok: false, error: err instanceof Error ? err.message : String(err) },
-      { status: 500, headers: corsHeaders }
+      { status: 500 }
     );
   }
 }
