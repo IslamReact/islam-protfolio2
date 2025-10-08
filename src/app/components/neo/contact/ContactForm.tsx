@@ -84,6 +84,27 @@ export default function ContactForm({ initialPrompt = '' }: { initialPrompt?: st
         setSentAt(new Date());
         setAiFull(buildAiReply(name, msg, mail));
         setAiTyping(true);
+
+        // 🔔 Envío secundario a tu API → Make (no bloquea la UI)
+        try {
+          const payload = {
+            name,
+            email: mail,
+            message: msg,
+            subject: 'Contacto web · islamelmrabet.dev',
+            page: typeof window !== 'undefined' ? window.location.href : undefined,
+            source: 'formspree' as const,
+          };
+          void fetch('/api/make-intake', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            keepalive: true,
+          });
+        } catch {
+          // no romper UX si falla el envío secundario
+        }
+
         setName('');
         setMail('');
         setMsg('');
